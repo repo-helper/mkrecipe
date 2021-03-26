@@ -1,0 +1,28 @@
+[build-system]
+requires = [ "setuptools>=40.6.0", "wheel>=0.34.2",]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "mkrecipe"
+version = "0.0.0"
+description = "A tool to create recipes for building conda packages from distributions on PyPI."
+readme = "README.rst"
+keywords = [ "pep517", "pep621", "conda", "sdist", "packaging", "distribution",]
+dynamic = [ "requires-python", "classifiers", "dependencies",]
+
+[[project.authors]]
+email = "dominic@davis-foster.co.uk"
+name = "Dominic Davis-Foster"
+
+
+[project.license]
+file = "LICENSE"
+
+[project.urls]
+Homepage = "https://github.com/repo-helper/mkrecipe"
+"Issue Tracker" = "https://github.com/repo-helper/mkrecipe/issues"
+"Source Code" = "https://github.com/repo-helper/mkrecipe"
+Documentation = "https://mkrecipe.readthedocs.io/en/latest"
+
+[project.scripts]
+mkrecipe = "mkrecipe.__main__:main"
