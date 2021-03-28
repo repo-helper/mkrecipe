@@ -49,7 +49,7 @@ __license__: str = "MIT License"
 __version__: str = "0.0.0"
 __email__: str = "dominic@davis-foster.co.uk"
 
-__all__ = ["MaryBerry", "make_recipe", "get_sdist_url"]
+__all__ = ["MaryBerry", "make_recipe"]
 
 
 class MaryBerry:
