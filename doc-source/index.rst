@@ -138,6 +138,9 @@ Installation
 
 .. end installation
 
+Contents
+------------
+
 .. toctree::
 	:hidden:
 
@@ -145,9 +148,18 @@ Installation
 
 .. toctree::
 	:maxdepth: 3
+	:caption: Documentation
+	:glob:
+
+	configuration
+	usage
+
+.. toctree::
+	:maxdepth: 3
 	:caption: API Reference
 	:glob:
 
+	api/mkrecipe
 	api/*
 
 .. toctree::

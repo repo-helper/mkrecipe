@@ -1,5 +1,5 @@
-=========
-mkrecipe
-=========
+==================
+:mod:`mkrecipe`
+==================
 
 .. automodule:: mkrecipe

@@ -1,0 +1,37 @@
+package:
+  name: "{{ name.lower() }}"
+  version: "{{ version }}"
+
+source:
+  url: "{{ sdist_url }}"
+
+build:
+  noarch: python
+  {% raw %}script: "{{ PYTHON }} {% endraw %}-m pip install . -vv  --no-build-isolation"
+
+requirements:
+  build:
+    - python
+{% for requirement in requires %}    - {{ requirement }}
+{% endfor %}  host:
+    - pip
+    - python
+{% for requirement in host_requirements %}    - {{ requirement }}
+{% endfor %}  run:
+    - python
+{% for requirement in runtime_requirements %}    - {{ requirement }}
+{% endfor %}
+test:
+  imports:
+    - {{ package }}
+
+about:
+{% if license_key %}  license: "{{ license_key }}"{% endif %}
+  summary: "{{ description }}"
+  description: "{{ conda_full_description }}"
+{% for entry in url_lines %}  {{ entry }}
+{% endfor %}
+extra:
+  maintainers:
+{% for name in all_maintainers %}    - {{ name }}
+{% endfor %}

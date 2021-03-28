@@ -1,0 +1,94 @@
+# 3rd party
+import pytest
+from coincidence.regressions import AdvancedFileRegressionFixture
+from consolekit.testing import CliRunner, Result
+from dom_toml.parser import BadConfigError
+from domdf_python_tools.paths import PathPlus, in_directory
+
+# this package
+from mkrecipe.__main__ import main
+from tests.example_configs import MINIMAL_CONFIG
+
+configs_dir = PathPlus(__file__).parent / "configs"
+
+
+@pytest.mark.parametrize(
+		"pyproject_file",
+		[
+				"consolekit.pyproject.toml",
+				"sphinx-toolbox.pyproject.toml",
+				"flake8-encodings.pyproject.toml",
+				"importcheck.pyproject.toml",
+				"mathematical.pyproject.toml",
+				]
+		)
+def test_mkrecipe(tmp_pathplus, pyproject_file, advanced_file_regression: AdvancedFileRegressionFixture):
+	(tmp_pathplus / "pyproject.toml").write_text((configs_dir / pyproject_file).read_text())
+	(tmp_pathplus / "requirements.txt").write_lines([
+			"click>=7.1.2",
+			'colorama>=0.4.3; python_version < "3.10"',
+			"deprecation-alias>=0.1.1",
+			"domdf-python-tools>=2.5.1",
+			"mistletoe>=0.7.2",
+			"typing-extensions>=3.7.4.3",
+			])
+
+	with in_directory(tmp_pathplus):
+		runner = CliRunner()
+		result: Result = runner.invoke(main)
+
+	advanced_file_regression.check_file(tmp_pathplus / "conda" / "meta.yaml")
+	assert result.exit_code == 0
+
+
+class TestHandleTracebacks:
+
+	@pytest.mark.parametrize(
+			"toml_config",
+			[
+					pytest.param('', id="empty"),
+					pytest.param('[build-system]\nrequires = ["setuptools", "wheel"]', id="build-system"),
+					pytest.param('[tool.whey]\nlicense-key = "MIT"', id="tool.whey"),
+					]
+			)
+	def test_no_project_table(self, toml_config: str, tmp_pathplus: PathPlus):
+		runner = CliRunner()
+		(tmp_pathplus / "pyproject.toml").write_clean(toml_config)
+		expected_error = pytest.raises(KeyError, match="'project' table not found in .*")
+
+		with in_directory(tmp_pathplus):
+
+			with expected_error:
+				runner.invoke(main, args="-T", catch_exceptions=False)
+
+			with expected_error:
+				runner.invoke(main, args="--traceback", catch_exceptions=False)
+
+			result = runner.invoke(main)
+			assert result.exit_code == 1
+			assert result.stdout == "KeyError: \"'project' table not found in 'pyproject.toml'\"\nAborted!\n"
+
+	def test_no_requirements(self, tmp_pathplus: PathPlus):
+		runner = CliRunner()
+		(tmp_pathplus / "pyproject.toml").write_clean(MINIMAL_CONFIG)
+
+		expected_error = pytest.raises(
+				BadConfigError,
+				match=
+				"'project.dependencies' was listed as a dynamic field but no 'requirements.txt' file was found.",
+				)
+
+		with in_directory(tmp_pathplus):
+
+			with expected_error:
+				runner.invoke(main, args="-T", catch_exceptions=False)
+
+			with expected_error:
+				runner.invoke(main, args="--traceback", catch_exceptions=False)
+
+			result = runner.invoke(main)
+			assert result.exit_code == 1
+			assert result.stdout == (
+					"BadConfigError: 'project.dependencies' was listed as a dynamic field but no 'requirements.txt' file was found.\n"
+					"Aborted!\n"
+					)

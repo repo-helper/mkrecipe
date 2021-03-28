@@ -1,0 +1,25 @@
+[build-system]
+requires = [ "setuptools>=40.6.0", "wheel>=0.34.2",]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "mathematical"
+version = "0.4.0"
+description = "Mathematical tools for Python\u2002📐\u2002🐍\u2002🛠️"
+readme = "README.rst"
+keywords = [ "mathematics", "utilities",]
+dynamic = [ "requires-python", "classifiers"]
+dependencies = [ "numpy", "scipy",]
+
+[[project.authors]]
+email = "dominic@davis-foster.co.uk"
+name = "Dominic Davis-Foster"
+
+[project.license]
+file = "LICENSE"
+
+[project.urls]
+Homepage = "https://github.com/domdfcoding/mathematical"
+"Issue Tracker" = "https://github.com/domdfcoding/mathematical/issues"
+"Source Code" = "https://github.com/domdfcoding/mathematical"
+Documentation = "https://mathematical.readthedocs.io/en/latest"

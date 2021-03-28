@@ -1,0 +1,8 @@
+authors:
+- email: null
+  name: Łukasz Langa
+description: Factory ⸻ A code generator 🏭
+dynamic:
+- dependencies
+name: spam
+version: 2020.0.0

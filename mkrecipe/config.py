@@ -1,0 +1,283 @@
+#!/usr/bin/env python3
+#
+#  config.py
+"""
+:pep:`621` configuration parser.
+"""
+#
+#  Copyright © 2021 Dominic Davis-Foster <dominic@davis-foster.co.uk>
+#
+#  Permission is hereby granted, free of charge, to any person obtaining a copy
+#  of this software and associated documentation files (the "Software"), to deal
+#  in the Software without restriction, including without limitation the rights
+#  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+#  copies of the Software, and to permit persons to whom the Software is
+#  furnished to do so, subject to the following conditions:
+#
+#  The above copyright notice and this permission notice shall be included in all
+#  copies or substantial portions of the Software.
+#
+#  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+#  EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+#  MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+#  IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM,
+#  DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
+#  OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE
+#  OR OTHER DEALINGS IN THE SOFTWARE.
+#
+
+# stdlib
+from typing import Any, Dict, List, Union
+
+# 3rd party
+import dom_toml
+import whey.config
+from dom_toml.parser import TOML_TYPES, AbstractConfigParser, BadConfigError
+from domdf_python_tools.paths import PathPlus, in_directory
+from domdf_python_tools.typing import PathLike
+from shippinglabel.requirements import ComparableRequirement, combine_requirements, read_requirements
+from typing_extensions import Literal
+
+__all__ = ["BuildSystemParser", "MkrecipeParser", "PEP621Parser", "load_toml"]
+
+
+class PEP621Parser(whey.config.PEP621Parser):
+	"""
+	Parser for :pep:`621` metadata from ``pyproject.toml``.
+	"""
+
+	defaults = {"description": None}
+	factories = {
+			"authors": list,
+			"maintainers": list,
+			"urls": dict,
+			"dependencies": list,
+			"optional-dependencies": dict,
+			}
+
+	@property
+	def keys(self) -> List[str]:
+		"""
+		The keys to parse from the TOML file.
+		"""
+
+		return [
+				"name",
+				"version",
+				"description",
+				"authors",
+				"maintainers",
+				"urls",
+				"dependencies",
+				"optional-dependencies",
+				]
+
+	def parse(
+			self,
+			config: Dict[str, TOML_TYPES],
+			set_defaults: bool = False,
+			) -> Dict[str, TOML_TYPES]:
+		"""
+		Parse the TOML configuration.
+
+		:param config:
+		:param set_defaults: If :py:obj:`True`, the values in :attr:`.AbstractConfigParser.defaults`
+			and :attr:`.AbstractConfigParser.factories` will be set as defaults for the returned mapping.
+		"""
+
+		dynamic_fields = config.get("dynamic", [])
+
+		parsed_config = {"dynamic": dynamic_fields}
+
+		if "name" in dynamic_fields:
+			raise BadConfigError("The 'project.name' field may not be dynamic.")
+		elif "name" not in config:
+			raise BadConfigError("The 'project.name' field must be provided.")
+
+		if "version" in dynamic_fields:
+			raise BadConfigError("The 'project.version' field may not be dynamic.")
+		elif "version" not in config:
+			raise BadConfigError("The 'project.version' field must be provided.")
+
+		if "dependencies" not in config and "dependencies" not in dynamic_fields:
+			raise BadConfigError("The 'project.dependencies' field must be provided or marked as 'dynamic'")
+
+		return self._parse(config, set_defaults)
+
+
+class MkrecipeParser(AbstractConfigParser):
+	"""
+	Parser for the ``[tool.mkrecipe]`` table from ``pyproject.toml``.
+	"""
+
+	# Don't add any options shared with tool.whey
+	defaults = {"extras": "none", "conda-channels": ["conda-forge"]}
+
+	def parse_package(self, config: Dict[str, TOML_TYPES]) -> str:
+		"""
+		Parse the ``package`` key, giving the name of the importable package.
+
+		This defaults to `project.name <https://www.python.org/dev/peps/pep-0621/#name>`_ if unspecified.
+
+		:param config: The unparsed TOML config for the ``[tool.mkrecipe]`` table.
+		"""
+
+		package = config["package"]
+
+		self.assert_type(package, str, ["tool", "mkrecipe", "package"])
+
+		return package
+
+	def parse_license_key(self, config: Dict[str, TOML_TYPES]) -> str:
+		"""
+		Parse the ``license-key`` key, giving the identifier of the project's license. Optional.
+
+		:param config: The unparsed TOML config for the ``[tool.mkrecipe]`` table.
+		"""
+
+		license_key = config["license-key"]
+
+		self.assert_type(license_key, str, ["tool", "mkrecipe", "license-key"])
+
+		return license_key
+
+	def parse_conda_channels(self, config: Dict[str, TOML_TYPES]) -> List[str]:
+		"""
+		Parse the ``conda-channels`` key, giving a list of required conda channels to build and install the package.
+
+		:param config: The unparsed TOML config for the ``[tool.mkrecipe]`` table.
+		"""
+
+		python_implementations = config["conda-channels"]
+
+		for idx, impl in enumerate(python_implementations):
+			self.assert_indexed_type(impl, str, ["tool", "mkrecipe", "conda-channels"], idx=idx)
+
+		return python_implementations
+
+	def parse_extras(self, config: Dict[str, TOML_TYPES]) -> Union[Literal["all"], Literal["none"], List[str]]:
+		"""
+		Parse the ``extras`` key, giving a list of extras to include as requirements in the conda package.
+
+		| The special keyword ``'all'`` indicates all extras should be included.
+		| The special keyword ``'none'`` indicates no extras should be included.
+
+		:param config: The unparsed TOML config for the ``[tool.mkrecipe]`` table.
+		"""
+
+		python_implementations = config["extras"]
+
+		if isinstance(python_implementations, str):
+			python_implementations_lower = python_implementations.lower()
+			if python_implementations_lower == "all":
+				return "all"
+			elif python_implementations_lower == "none":
+				return "none"
+			else:
+				raise BadConfigError(
+						"Invalid value for [tool.mkrecipe.extras]: "
+						"Expected 'all', 'none' or a list of strings."
+						)
+
+		for idx, impl in enumerate(python_implementations):
+			self.assert_indexed_type(impl, str, ["tool", "mkrecipe", "extras"], idx=idx)
+
+		return python_implementations
+
+	@property
+	def keys(self) -> List[str]:
+		"""
+		The keys to parse from the TOML file.
+		"""
+
+		return [
+				"package",
+				"license-key",
+				"conda-channels",
+				"extras",
+				]
+
+
+class BuildSystemParser(AbstractConfigParser):
+	"""
+	Parser for the ``[build-system]`` table from ``pyproject.toml``.
+	"""
+
+	factories = {"requires": list}
+
+	def parse_requires(self, config: Dict[str, TOML_TYPES]) -> List[ComparableRequirement]:
+		"""
+		Parse the `requires <https://www.python.org/dev/peps/pep-0518/#build-system-table>`_ key.
+
+		:param config: The unparsed TOML config for the ``[build-system]`` table.
+		"""
+
+		parsed_dependencies = set()
+
+		for idx, keyword in enumerate(config["requires"]):
+			self.assert_indexed_type(keyword, str, ["build-system", "requires"], idx=idx)
+			parsed_dependencies.add(ComparableRequirement(keyword))
+
+		return sorted(combine_requirements(parsed_dependencies))
+
+	@property
+	def keys(self) -> List[str]:
+		"""
+		The keys to parse from the TOML file.
+		"""
+
+		return ["requires"]
+
+
+def load_toml(filename: PathLike) -> Dict[str, Any]:  # TODO: TypedDict
+	"""
+	Load the ``mkrecipe`` configuration mapping from the given TOML file.
+
+	:param filename:
+	"""
+
+	filename = PathPlus(filename)
+
+	project_dir = filename.parent
+	config = dom_toml.load(filename)
+
+	parsed_config = {}
+	tool_table = config.get("tool", {})
+
+	with in_directory(filename.parent):
+
+		parsed_config.update(BuildSystemParser().parse(config.get("build-system", {}), set_defaults=True))
+		parsed_config.update(whey.config.WheyParser().parse(tool_table.get("whey", {})))
+		parsed_config.update(MkrecipeParser().parse(tool_table.get("mkrecipe", {}), set_defaults=True))
+
+		if "project" in config:
+			parsed_config.update(PEP621Parser().parse(config["project"], set_defaults=True))
+		else:
+			raise KeyError(f"'project' table not found in '{filename!s}'")
+
+	# set defaults
+	parsed_config.setdefault("package", config["project"]["name"].split('.', 1)[0])
+	parsed_config.setdefault("license-key", None)
+
+	if "dependencies" in parsed_config.get("dynamic", []):
+		if (project_dir / "requirements.txt").is_file():
+			dependencies = read_requirements(project_dir / "requirements.txt", include_invalid=True)[0]
+			parsed_config["dependencies"] = sorted(combine_requirements(dependencies))
+		else:
+			raise BadConfigError(
+					"'project.dependencies' was listed as a dynamic field "
+					"but no 'requirements.txt' file was found."
+					)
+
+	parsed_config["version"] = str(parsed_config["version"])
+	parsed_config["requires"] = sorted(
+			set(
+					combine_requirements(
+							parsed_config["requires"],
+							ComparableRequirement("setuptools"),
+							ComparableRequirement("wheel"),
+							)
+					)
+			)
+
+	return parsed_config
