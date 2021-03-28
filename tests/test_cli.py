@@ -72,10 +72,10 @@ class TestHandleTracebacks:
 		runner = CliRunner()
 		(tmp_pathplus / "pyproject.toml").write_clean(MINIMAL_CONFIG)
 
+		error_message = "'project.dependencies' was listed as a dynamic field but no 'requirements.txt' file was found."
 		expected_error = pytest.raises(
 				BadConfigError,
-				match=
-				"'project.dependencies' was listed as a dynamic field but no 'requirements.txt' file was found.",
+				match=error_message,
 				)
 
 		with in_directory(tmp_pathplus):
@@ -88,7 +88,4 @@ class TestHandleTracebacks:
 
 			result = runner.invoke(main)
 			assert result.exit_code == 1
-			assert result.stdout == (
-					"BadConfigError: 'project.dependencies' was listed as a dynamic field but no 'requirements.txt' file was found.\n"
-					"Aborted!\n"
-					)
+			assert result.stdout == f"BadConfigError: {error_message}\n" "Aborted!\n"
