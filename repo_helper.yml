@@ -46,10 +46,8 @@ classifiers:
  - "Topic :: System :: Archiving :: Packaging"
 
 keywords:
- - pep517
  - pep621
  - conda
- - sdist
  - packaging
  - distribution
 

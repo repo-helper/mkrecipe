@@ -7,7 +7,7 @@ name = "mkrecipe"
 version = "0.0.0"
 description = "A tool to create recipes for building conda packages from distributions on PyPI."
 readme = "README.rst"
-keywords = [ "pep517", "pep621", "conda", "sdist", "packaging", "distribution",]
+keywords = [ "pep621", "conda", "packaging", "distribution",]
 dynamic = [ "requires-python", "classifiers", "dependencies",]
 
 [[project.authors]]
