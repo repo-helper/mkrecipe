@@ -26,7 +26,7 @@ test:
     - {{ package }}
 
 about:
-{% if license_key %}  license: "{{ license_key }}"{% endif %}
+{% if project_license %}  license: "{{ project_license }}"{% endif %}
   summary: "{{ description }}"
   description: "{{ conda_full_description }}"
 {% for entry in url_lines %}  {{ entry }}

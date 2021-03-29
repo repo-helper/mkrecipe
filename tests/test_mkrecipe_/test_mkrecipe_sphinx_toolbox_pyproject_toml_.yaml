@@ -41,7 +41,7 @@ test:
     - sphinx_toolbox
 
 about:
-  license: "MIT"
+  license: "MIT License"
   summary: "Box of handy tools for Sphinx 🧰 📔"
   description: "Box of handy tools for Sphinx 🧰 📔
 

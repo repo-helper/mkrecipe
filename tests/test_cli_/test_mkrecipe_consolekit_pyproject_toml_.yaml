@@ -45,7 +45,7 @@ test:
     - consolekit
 
 about:
-  license: "MIT"
+  license: "MIT License"
   summary: "Additional utilities for click."
   description: "Additional utilities for click.
 

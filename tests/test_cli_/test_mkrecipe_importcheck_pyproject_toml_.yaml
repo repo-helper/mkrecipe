@@ -41,7 +41,7 @@ test:
     - importcheck
 
 about:
-  license: "MIT"
+  license: "MIT License"
   summary: "A tool to check all modules can be correctly imported."
   description: "A tool to check all modules can be correctly imported.
 

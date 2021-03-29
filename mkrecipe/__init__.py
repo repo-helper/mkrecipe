@@ -39,6 +39,7 @@ from jinja2 import BaseLoader, Environment, StrictUndefined
 from shippinglabel.conda import prepare_requirements, validate_requirements
 from shippinglabel.pypi import get_sdist_url
 from shippinglabel.requirements import ComparableRequirement, combine_requirements
+from whey.config.whey import license_lookup
 
 # this package
 from mkrecipe.config import load_toml
@@ -90,6 +91,8 @@ class MaryBerry:
 						))
 				)
 
+		project_license = license_lookup.get(self.config["license-key"], self.config["license-key"])
+
 		environment = Environment(loader=BaseLoader(), undefined=StrictUndefined)  # nosec: B701
 		template = environment.from_string(importlib_resources.read_text("mkrecipe", "recipe_template.ymlt"))
 		config = {k.replace('-', '_'): v for k, v in self.config.items()}
@@ -101,6 +104,7 @@ class MaryBerry:
 				conda_full_description=self.make_conda_description(),
 				url_lines=list(self.get_urls()),
 				all_maintainers=sorted(self.get_maintainers()),
+				project_license=project_license,
 				**config,
 				)
 
