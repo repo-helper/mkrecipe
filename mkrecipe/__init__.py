@@ -82,7 +82,13 @@ class MaryBerry:
 		sdist_url = self.get_sdist_url()
 
 		runtime_requirements = self.get_runtime_requirements()
-		host_requirements = sorted(set(combine_requirements(runtime_requirements, *self.config["requires"])))
+		host_requirements = sorted(
+				set(combine_requirements(
+						runtime_requirements,
+						*self.config["requires"],
+						normalize_func=str,
+						))
+				)
 
 		environment = Environment(loader=BaseLoader(), undefined=StrictUndefined)  # nosec: B701
 		template = environment.from_string(importlib_resources.read_text("mkrecipe", "recipe_template.ymlt"))
