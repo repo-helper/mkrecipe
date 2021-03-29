@@ -4,7 +4,7 @@ build-backend = "whey"
 
 [project]
 name = "mkrecipe"
-version = "0.1.1"
+version = "0.1.2"
 description = "A tool to create recipes for building conda packages from distributions on PyPI."
 readme = "README.rst"
 keywords = [ "pep621", "conda", "packaging", "distribution",]
