@@ -28,7 +28,8 @@ Documentation = "https://mkrecipe.readthedocs.io/en/latest"
 mkrecipe = "mkrecipe.__main__:main"
 
 [tool.mkrecipe]
-conda-channels = [ "domdfcoding", "conda-forge",]
+conda-channels = [ "conda-forge", "domdfcoding",]
+extras = "all"
 
 [tool.whey]
 base-classifiers = [
