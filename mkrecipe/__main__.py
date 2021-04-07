@@ -46,7 +46,7 @@ __all__ = ["main"]
 
 class ConfigTracebackHandler(TracebackHandler):
 	"""
-	:class:`consolekit.tracebacks.TracebackHandler` which handles :exc:`BadConfigError`.
+	:class:`consolekit.tracebacks.TracebackHandler` which handles :exc:`~.BadConfigError`.
 	"""
 
 	def handle_BadConfigError(self, e: "BadConfigError") -> bool:  # noqa: D102
