@@ -41,6 +41,7 @@ known_third_party = [
     "dom_toml",
     "domdf_python_tools",
     "first",
+    "importlib_metadata",
     "jinja2",
     "pytest",
     "pytest_cov",
