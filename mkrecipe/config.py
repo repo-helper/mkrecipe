@@ -37,6 +37,7 @@ from domdf_python_tools.paths import PathPlus, in_directory
 from domdf_python_tools.typing import PathLike
 from shippinglabel.requirements import ComparableRequirement, combine_requirements, read_requirements
 from typing_extensions import Literal
+from whey.config.pep621 import name_re
 
 __all__ = ["BuildSystemParser", "MkrecipeParser", "PEP621Parser", "load_toml"]
 
@@ -54,6 +55,22 @@ class PEP621Parser(whey.config.PEP621Parser):
 			"dependencies": list,
 			"optional-dependencies": dict,
 			}
+
+	@staticmethod
+	def parse_name(config: Dict[str, TOML_TYPES]) -> str:
+		"""
+		Parse the `name <https://www.python.org/dev/peps/pep-0621/#name>`_ key.
+
+		:param config: The unparsed TOML config for the ``[project]`` table.
+		"""
+
+		normalized_name = config["name"].lower()
+
+		# https://packaging.python.org/specifications/core-metadata/#name
+		if not name_re.match(normalized_name):
+			raise BadConfigError("The value for 'project.name' is invalid.")
+
+		return normalized_name
 
 	@property
 	def keys(self) -> List[str]:
