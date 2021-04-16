@@ -28,14 +28,17 @@ A tool to create recipes for building conda packages from distributions on PyPI.
 
 # stdlib
 import re
+import time
 from itertools import chain
 from typing import Any, Dict, Iterable, List
 
 # 3rd party
+import click
 from domdf_python_tools.compat import importlib_resources
 from domdf_python_tools.paths import PathPlus
 from domdf_python_tools.typing import PathLike
 from jinja2 import BaseLoader, Environment, StrictUndefined
+from packaging.requirements import InvalidRequirement
 from shippinglabel.conda import prepare_requirements, validate_requirements
 from shippinglabel.pypi import get_sdist_url
 from shippinglabel.requirements import ComparableRequirement, combine_requirements
@@ -119,7 +122,17 @@ class MaryBerry:
 		Returns the URL of the project's source distribution on PyPI.
 		"""
 
-		return get_sdist_url(self.config["name"], self.config["version"])
+		for retry in range(0, 4):
+			# TODO: perhaps add an option or environment variable
+			try:
+				return get_sdist_url(self.config["name"], self.config["version"])
+			except InvalidRequirement as e:
+				click.echo(f"{e} Trying again in 10s", err=True)
+				time.sleep(10)
+		else:
+			raise InvalidRequirement(
+					f"Cannot find {self.config['name']} version {self.config['version']} on PyPI."
+					)
 
 	def get_runtime_requirements(self) -> List[ComparableRequirement]:
 		"""
