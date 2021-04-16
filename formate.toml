@@ -43,6 +43,7 @@ known_third_party = [
     "first",
     "importlib_metadata",
     "jinja2",
+    "packaging",
     "pytest",
     "pytest_cov",
     "pytest_randomly",
