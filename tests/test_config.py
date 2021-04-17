@@ -63,17 +63,17 @@ def test_pep621_class_valid_config(
 		config = PEP621Parser().parse(dom_toml.load(tmp_pathplus / "pyproject.toml")["project"])
 
 	if "dependencies" in config:
-		config["dependencies"] = list(map(str, config["dependencies"]))
+		config["dependencies"] = list(map(str, config["dependencies"]))  # type: ignore
 	if "optional-dependencies" in config:
 		config["optional-dependencies"] = {
-				k: list(map(str, v))
+				k: list(map(str, v))  # type: ignore
 				for k, v in config["optional-dependencies"].items()
 				}
 
 	if "requires-python" in config and config["requires-python"] is not None:
-		config["requires-python"] = str(config["requires-python"])
+		config["requires-python"] = str(config["requires-python"])  # type: ignore
 	if "version" in config and config["version"] is not None:
-		config["version"] = str(config["version"])
+		config["version"] = str(config["version"])  # type: ignore
 
 	advanced_data_regression.check(config)
 
@@ -167,7 +167,7 @@ def test_buildsystem_parser_valid_config(
 	(tmp_pathplus / "pyproject.toml").write_clean(toml_config)
 	config = BuildSystemParser().parse(dom_toml.load(tmp_pathplus / "pyproject.toml")["build-system"])
 
-	config["requires"] = list(map(str, config["requires"]))
+	config["requires"] = list(map(str, config["requires"]))  # type: ignore
 
 	advanced_data_regression.check(config)
 

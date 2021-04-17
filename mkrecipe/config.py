@@ -3,6 +3,10 @@
 #  config.py
 """
 :pep:`621` configuration parser.
+
+.. versionchanged:: 0.2.0
+
+	``BuildSystemParser`` moved to :mod:`pyproject_parser.parsers`
 """
 #
 #  Copyright © 2021 Dominic Davis-Foster <dominic@davis-foster.co.uk>
@@ -32,14 +36,15 @@ from typing import Any, Dict, List, Union
 # 3rd party
 import dom_toml
 import whey.config
-from dom_toml.parser import TOML_TYPES, AbstractConfigParser, BadConfigError
+from dom_toml.parser import TOML_TYPES, AbstractConfigParser, BadConfigError, construct_path
 from domdf_python_tools.paths import PathPlus, in_directory
 from domdf_python_tools.typing import PathLike
+from pyproject_parser.parsers import BuildSystemParser, name_re
+from pyproject_parser.type_hints import ProjectDict
 from shippinglabel.requirements import ComparableRequirement, combine_requirements, read_requirements
 from typing_extensions import Literal
-from whey.config.pep621 import name_re
 
-__all__ = ["BuildSystemParser", "MkrecipeParser", "PEP621Parser", "load_toml"]
+__all__ = ["MkrecipeParser", "PEP621Parser", "load_toml"]
 
 
 class PEP621Parser(whey.config.PEP621Parser):
@@ -55,6 +60,16 @@ class PEP621Parser(whey.config.PEP621Parser):
 			"dependencies": list,
 			"optional-dependencies": dict,
 			}
+	keys: List[str] = [
+			"name",
+			"version",
+			"description",
+			"authors",
+			"maintainers",
+			"urls",
+			"dependencies",
+			"optional-dependencies",
+			]
 
 	@staticmethod
 	def parse_name(config: Dict[str, TOML_TYPES]) -> str:
@@ -64,6 +79,7 @@ class PEP621Parser(whey.config.PEP621Parser):
 		:param config: The unparsed TOML config for the ``[project]`` table.
 		"""
 
+		# preserve underscores, dots and hyphens, as conda doesn't treat them as equivalent.
 		normalized_name = config["name"].lower()
 
 		# https://packaging.python.org/specifications/core-metadata/#name
@@ -72,28 +88,11 @@ class PEP621Parser(whey.config.PEP621Parser):
 
 		return normalized_name
 
-	@property
-	def keys(self) -> List[str]:
-		"""
-		The keys to parse from the TOML file.
-		"""
-
-		return [
-				"name",
-				"version",
-				"description",
-				"authors",
-				"maintainers",
-				"urls",
-				"dependencies",
-				"optional-dependencies",
-				]
-
-	def parse(
-			self,
-			config: Dict[str, TOML_TYPES],
-			set_defaults: bool = False,
-			) -> Dict[str, TOML_TYPES]:
+	def parse(  # type: ignore[override]
+		self,
+		config: Dict[str, TOML_TYPES],
+		set_defaults: bool = False,
+		) -> ProjectDict:
 		"""
 		Parse the TOML configuration.
 
@@ -127,6 +126,8 @@ class MkrecipeParser(AbstractConfigParser):
 	Parser for the ``[tool.mkrecipe]`` table from ``pyproject.toml``.
 	"""
 
+	table_name = ("tool", "mkrecipe")
+
 	# Don't add any options shared with tool.whey
 	defaults = {"extras": "none", "conda-channels": ["conda-forge"]}
 
@@ -141,7 +142,7 @@ class MkrecipeParser(AbstractConfigParser):
 
 		package = config["package"]
 
-		self.assert_type(package, str, ["tool", "mkrecipe", "package"])
+		self.assert_type(package, str, [*self.table_name, "package"])
 
 		return package
 
@@ -154,7 +155,7 @@ class MkrecipeParser(AbstractConfigParser):
 
 		license_key = config["license-key"]
 
-		self.assert_type(license_key, str, ["tool", "mkrecipe", "license-key"])
+		self.assert_type(license_key, str, [*self.table_name, "license-key"])
 
 		return license_key
 
@@ -168,7 +169,7 @@ class MkrecipeParser(AbstractConfigParser):
 		python_implementations = config["conda-channels"]
 
 		for idx, impl in enumerate(python_implementations):
-			self.assert_indexed_type(impl, str, ["tool", "mkrecipe", "conda-channels"], idx=idx)
+			self.assert_indexed_type(impl, str, [*self.table_name, "conda-channels"], idx=idx)
 
 		return python_implementations
 
@@ -184,6 +185,8 @@ class MkrecipeParser(AbstractConfigParser):
 
 		python_implementations = config["extras"]
 
+		path_elements = [*self.table_name, "extras"]
+
 		if isinstance(python_implementations, str):
 			python_implementations_lower = python_implementations.lower()
 			if python_implementations_lower == "all":
@@ -192,12 +195,12 @@ class MkrecipeParser(AbstractConfigParser):
 				return "none"
 			else:
 				raise BadConfigError(
-						"Invalid value for [tool.mkrecipe.extras]: "
+						f"Invalid value for {construct_path(path_elements)}: "
 						"Expected 'all', 'none' or a list of strings."
 						)
 
 		for idx, impl in enumerate(python_implementations):
-			self.assert_indexed_type(impl, str, ["tool", "mkrecipe", "extras"], idx=idx)
+			self.assert_indexed_type(impl, str, path_elements, idx=idx)
 
 		return python_implementations
 
@@ -215,37 +218,6 @@ class MkrecipeParser(AbstractConfigParser):
 				]
 
 
-class BuildSystemParser(AbstractConfigParser):
-	"""
-	Parser for the ``[build-system]`` table from ``pyproject.toml``.
-	"""
-
-	factories = {"requires": list}
-
-	def parse_requires(self, config: Dict[str, TOML_TYPES]) -> List[ComparableRequirement]:
-		"""
-		Parse the `requires <https://www.python.org/dev/peps/pep-0518/#build-system-table>`_ key.
-
-		:param config: The unparsed TOML config for the ``[build-system]`` table.
-		"""
-
-		parsed_dependencies = set()
-
-		for idx, keyword in enumerate(config["requires"]):
-			self.assert_indexed_type(keyword, str, ["build-system", "requires"], idx=idx)
-			parsed_dependencies.add(ComparableRequirement(keyword))
-
-		return sorted(combine_requirements(parsed_dependencies))
-
-	@property
-	def keys(self) -> List[str]:
-		"""
-		The keys to parse from the TOML file.
-		"""
-
-		return ["requires"]
-
-
 def load_toml(filename: PathLike) -> Dict[str, Any]:  # TODO: TypedDict
 	"""
 	Load the ``mkrecipe`` configuration mapping from the given TOML file.
@@ -258,7 +230,7 @@ def load_toml(filename: PathLike) -> Dict[str, Any]:  # TODO: TypedDict
 	project_dir = filename.parent
 	config = dom_toml.load(filename)
 
-	parsed_config = {}
+	parsed_config: Dict[str, Any] = {}
 	tool_table = config.get("tool", {})
 
 	with in_directory(filename.parent):
