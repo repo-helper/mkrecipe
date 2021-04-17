@@ -147,3 +147,15 @@ To install with ``conda``:
 		$ conda install mkrecipe
 
 .. end installation
+
+
+Usage
+-----------
+
+``mkrecipe`` is configured in ``pyproject.toml``. See `the documentation`_ for more information.
+
+.. _the documentation: https://mkrecipe.readthedocs.io/en/latest/configuration.html
+
+``mkrecipe`` can then be run with the ``mkrecipe`` command when in the project directory.
+This will write the conda recipe to ``./conda/meta.yaml``.
+The output directory can be customised using the ``-o / --outfile`` option.
