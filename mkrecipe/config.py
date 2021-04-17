@@ -195,7 +195,7 @@ class MkrecipeParser(AbstractConfigParser):
 				return "none"
 			else:
 				raise BadConfigError(
-						f"Invalid value for {construct_path(path_elements)}: "
+						f"Invalid value for [{construct_path(path_elements)}]: "
 						"Expected 'all', 'none' or a list of strings."
 						)
 
