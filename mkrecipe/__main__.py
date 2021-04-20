@@ -34,32 +34,13 @@ from typing import TYPE_CHECKING
 import click
 from consolekit import click_command
 from consolekit.options import auto_default_option
-from consolekit.tracebacks import TracebackHandler, handle_tracebacks, traceback_option
+from consolekit.tracebacks import handle_tracebacks, traceback_option
 
 if TYPE_CHECKING:
 	# 3rd party
-	from dom_toml.parser import BadConfigError
 	from domdf_python_tools.typing import PathLike
 
 __all__ = ["main"]
-
-
-class ConfigTracebackHandler(TracebackHandler):
-	"""
-	:class:`consolekit.tracebacks.TracebackHandler` which handles :exc:`~.BadConfigError`.
-	"""
-
-	def handle_BadConfigError(self, e: "BadConfigError") -> bool:  # noqa: D102
-		# 3rd party
-		from consolekit.utils import abort
-
-		raise abort(f"{e.__class__.__name__}: {e}", colour=False)
-
-	def handle_KeyError(self, e: KeyError) -> bool:  # noqa: D102
-		# 3rd party
-		from consolekit.utils import abort
-
-		raise abort(f"{e.__class__.__name__}: {e}", colour=False)
 
 
 @traceback_option()
@@ -74,6 +55,9 @@ def main(
 	"""
 	Make a conda recipe for the given project.
 	"""
+
+	# 3rd party
+	from pyproject_parser.cli import ConfigTracebackHandler
 
 	# this package
 	from mkrecipe import make_recipe
