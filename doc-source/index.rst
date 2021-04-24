@@ -136,7 +136,9 @@ Installation
 .. end installation
 
 Contents
-------------
+-----------
+
+.. html-section::
 
 .. toctree::
 	:hidden:
