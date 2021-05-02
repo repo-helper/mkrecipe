@@ -7,7 +7,7 @@ source:
 
 build:
   noarch: python
-  {% raw %}script: "{{ PYTHON }} {% endraw %}-m pip install . -vv  --no-build-isolation"
+  {% raw %}script: "{{ PYTHON }} {% endraw %}-m pip install . -vv  --no-build-isolation --no-deps"
 
 requirements:
   build:
