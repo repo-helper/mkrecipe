@@ -57,6 +57,13 @@ def test_mkrecipe(tmp_pathplus, pyproject_file, advanced_file_regression: Advanc
 	assert result.exit_code == 0
 	advanced_file_regression.check_file(tmp_pathplus / "conda" / "meta.yaml")
 
+	with in_directory(tmp_pathplus):
+		result = runner.invoke(main, args=["--type", "SDIST"])
+
+	assert result.stdout.strip() == "Recipe written to 'conda/meta.yaml'"
+	assert result.exit_code == 0
+	advanced_file_regression.check_file(tmp_pathplus / "conda" / "meta.yaml")
+
 
 @pytest.mark.parametrize(
 		"pyproject_file",
@@ -91,6 +98,13 @@ def test_mkrecipe_wheel(tmp_pathplus, pyproject_file, advanced_file_regression: 
 
 	with in_directory(tmp_pathplus):
 		result = runner.invoke(main, args=["-t", "wheel"])
+
+	assert result.stdout.strip() == "Recipe written to 'conda/meta.yaml'"
+	assert result.exit_code == 0
+	advanced_file_regression.check_file(tmp_pathplus / "conda" / "meta.yaml")
+
+	with in_directory(tmp_pathplus):
+		result = runner.invoke(main, args=["--type", "WHEEL"])
 
 	assert result.stdout.strip() == "Recipe written to 'conda/meta.yaml'"
 	assert result.exit_code == 0
