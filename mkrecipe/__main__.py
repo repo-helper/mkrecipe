@@ -39,17 +39,27 @@ from consolekit.tracebacks import handle_tracebacks, traceback_option
 if TYPE_CHECKING:
 	# 3rd party
 	from domdf_python_tools.typing import PathLike
+	from typing_extensions import Literal
 
 __all__ = ["main"]
 
 
 @traceback_option()
+@auto_default_option(
+		"-t",
+		"--type",
+		"artifact_type",
+		type=click.Choice(["sdist", "wheel"], case_sensitive=False),
+		help="The type of release artifact to build the conda package from.",
+		show_default=True,
+		)
 @auto_default_option("-o", "--outfile", type=click.STRING, help="The output file.", show_default=True)
 @click.argument("project", type=click.STRING, default='.')
 @click_command()
 def main(
 		project: "PathLike" = '.',
 		outfile: str = "conda/meta.yaml",
+		artifact_type: "Literal['sdist', 'wheel']" = "sdist",
 		show_traceback: bool = False,
 		):
 	"""
@@ -57,14 +67,26 @@ def main(
 	"""
 
 	# 3rd party
+	from domdf_python_tools.paths import PathPlus
 	from pyproject_parser.cli import ConfigTracebackHandler
 
 	# this package
-	from mkrecipe import make_recipe
+	from mkrecipe import MaryBerry
 
 	with handle_tracebacks(show_traceback, ConfigTracebackHandler):
-		make_recipe(project, outfile)
-		click.echo(f"Recipe written to {outfile}")
+		recipe_file = PathPlus(outfile)
+		recipe_file.parent.maybe_make(parents=True)
+
+		if artifact_type == "sdist":
+			recipe = MaryBerry(project).make()
+		elif artifact_type == "wheel":
+			recipe = MaryBerry(project).make_for_wheel()
+		else:  # pragma: no cover
+			# Click should handle this case for us
+			raise click.BadOptionUsage("type", f"Unknown value for '--type': {artifact_type}")
+
+		recipe_file.write_clean(recipe)
+		click.echo(f"Recipe written to {recipe_file.as_posix()!r}")
 
 
 if __name__ == "__main__":

@@ -33,12 +33,92 @@ def test_mkrecipe(tmp_pathplus, pyproject_file, advanced_file_regression: Advanc
 			"typing-extensions>=3.7.4.3",
 			])
 
+	runner = CliRunner()
+	result: Result
+
 	with in_directory(tmp_pathplus):
-		runner = CliRunner()
-		result: Result = runner.invoke(main)
+		result = runner.invoke(main)
 
 	advanced_file_regression.check_file(tmp_pathplus / "conda" / "meta.yaml")
 	assert result.exit_code == 0
+
+	with in_directory(tmp_pathplus):
+		result = runner.invoke(main, args=["--type", "sdist"])
+
+	advanced_file_regression.check_file(tmp_pathplus / "conda" / "meta.yaml")
+	assert result.exit_code == 0
+
+	with in_directory(tmp_pathplus):
+		result = runner.invoke(main, args=["-t", "sdist"])
+
+	advanced_file_regression.check_file(tmp_pathplus / "conda" / "meta.yaml")
+	assert result.exit_code == 0
+
+
+@pytest.mark.parametrize(
+		"pyproject_file",
+		[
+				"consolekit.pyproject.toml",
+				"sphinx-toolbox.pyproject.toml",
+				"flake8-encodings.pyproject.toml",
+				"importcheck.pyproject.toml",
+				"mathematical.pyproject.toml",
+				]
+		)
+def test_mkrecipe_wheel(tmp_pathplus, pyproject_file, advanced_file_regression: AdvancedFileRegressionFixture):
+	(tmp_pathplus / "pyproject.toml").write_text((configs_dir / pyproject_file).read_text())
+	(tmp_pathplus / "requirements.txt").write_lines([
+			"click>=7.1.2",
+			'colorama>=0.4.3; python_version < "3.10"',
+			"deprecation-alias>=0.1.1",
+			"domdf-python-tools>=2.5.1",
+			"mistletoe>=0.7.2",
+			"typing-extensions>=3.7.4.3",
+			])
+
+	runner = CliRunner()
+	result: Result
+
+	with in_directory(tmp_pathplus):
+		result = runner.invoke(main, args=["--type", "wheel"])
+
+	advanced_file_regression.check_file(tmp_pathplus / "conda" / "meta.yaml")
+	assert result.exit_code == 0
+
+	with in_directory(tmp_pathplus):
+		result = runner.invoke(main, args=["-t", "wheel"])
+
+	advanced_file_regression.check_file(tmp_pathplus / "conda" / "meta.yaml")
+	assert result.exit_code == 0
+
+
+@pytest.mark.parametrize(
+		"pyproject_file",
+		[
+				"consolekit.pyproject.toml",
+				"sphinx-toolbox.pyproject.toml",
+				"flake8-encodings.pyproject.toml",
+				"importcheck.pyproject.toml",
+				"mathematical.pyproject.toml",
+				]
+		)
+def test_mkrecipe_bad_type(tmp_pathplus, pyproject_file, advanced_file_regression: AdvancedFileRegressionFixture):
+	(tmp_pathplus / "pyproject.toml").write_text((configs_dir / pyproject_file).read_text())
+	(tmp_pathplus / "requirements.txt").write_lines([
+			"click>=7.1.2",
+			'colorama>=0.4.3; python_version < "3.10"',
+			"deprecation-alias>=0.1.1",
+			"domdf-python-tools>=2.5.1",
+			"mistletoe>=0.7.2",
+			"typing-extensions>=3.7.4.3",
+			])
+
+	with in_directory(tmp_pathplus):
+		runner = CliRunner()
+		result: Result = runner.invoke(main, args=["--type", "egg"], catch_exceptions=False)
+
+	assert result.exit_code == 2
+	result.check_stdout(advanced_file_regression)
 
 
 class TestHandleTracebacks:

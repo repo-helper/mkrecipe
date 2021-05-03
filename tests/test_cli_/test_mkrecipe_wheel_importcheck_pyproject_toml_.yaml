@@ -1,0 +1,49 @@
+package:
+  name: "importcheck"
+  version: "0.3.0"
+
+build:
+  noarch: python
+  script: "{{ PYTHON }} -m pip install https://files.pythonhosted.org/packages/aa/52/4a08aeb995be5e0612bf8ceba645277f836c3e6da05645e16ec1c5c2a15a/importcheck-0.3.0-py3-none-any.whl -vv --no-deps"
+
+requirements:
+  build:
+    - python
+    - setuptools
+    - wheel
+  host:
+    - pip
+    - python
+    - click>=7.1.2
+    - colorama>=0.4.3
+    - deprecation-alias>=0.1.1
+    - domdf_python_tools>=2.5.1
+    - mistletoe>=0.7.2
+    - setuptools
+    - typing-extensions>=3.7.4.3
+    - wheel
+  run:
+    - python
+    - click>=7.1.2
+    - colorama>=0.4.3
+    - deprecation-alias>=0.1.1
+    - domdf_python_tools>=2.5.1
+    - mistletoe>=0.7.2
+    - typing-extensions>=3.7.4.3
+
+test:
+  imports:
+    - importcheck
+
+about:
+  license: "MIT License"
+  summary: "A tool to check all modules can be correctly imported."
+  description: "A tool to check all modules can be correctly imported.
+
+
+Before installing please ensure you have added the following channels: domdfcoding, conda-forge
+"
+
+extra:
+  maintainers:
+    - 'Dominic Davis-Foster'

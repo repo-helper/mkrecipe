@@ -1,0 +1,44 @@
+package:
+  name: "mathematical"
+  version: "0.4.0"
+
+build:
+  noarch: python
+  script: "{{ PYTHON }} -m pip install https://files.pythonhosted.org/packages/dd/88/82714335eeb9648df970a2f278941f927230631152b80d8836b4d5da1ec0/mathematical-0.4.0-py3-none-any.whl -vv --no-deps"
+
+requirements:
+  build:
+    - python
+    - setuptools
+    - wheel
+  host:
+    - pip
+    - python
+    - numpy>=1.19.0
+    - scipy
+    - setuptools
+    - wheel
+  run:
+    - python
+    - scipy
+    - numpy>=1.19.0
+
+test:
+  imports:
+    - mathematical
+
+about:
+
+  summary: "Mathematical tools for Python 📐 🐍 🛠️"
+  description: "Mathematical tools for Python 📐 🐍 🛠️
+
+
+Before installing please ensure you have added the following channels: conda-forge
+"
+  home: 'https://github.com/domdfcoding/mathematical'
+  dev_url: 'https://github.com/domdfcoding/mathematical'
+  doc_url: 'https://mathematical.readthedocs.io/en/latest'
+
+extra:
+  maintainers:
+    - 'Dominic Davis-Foster'

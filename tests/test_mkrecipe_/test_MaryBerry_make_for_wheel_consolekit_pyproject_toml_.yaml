@@ -1,0 +1,58 @@
+package:
+  name: "consolekit"
+  version: "1.1.1"
+
+build:
+  noarch: python
+  script: "{{ PYTHON }} -m pip install https://files.pythonhosted.org/packages/37/5b/f1dde46d75e27b561d86e3eeee5dc70bb5153b46e06389eb9df76f5900c1/consolekit-1.1.1-py3-none-any.whl -vv --no-deps"
+
+requirements:
+  build:
+    - python
+    - setuptools
+    - wheel
+  host:
+    - pip
+    - python
+    - click>=7.1.2
+    - coincidence>=0.1.0
+    - colorama>=0.4.3
+    - deprecation-alias>=0.1.1
+    - domdf_python_tools>=2.5.1
+    - mistletoe>=0.7.2
+    - pytest>=6.0.0
+    - pytest-regressions>=2.0.2
+    - setuptools
+    - typing-extensions>=3.7.4.3
+    - wheel
+  run:
+    - python
+    - click>=7.1.2
+    - coincidence>=0.1.0
+    - colorama>=0.4.3
+    - deprecation-alias>=0.1.1
+    - domdf_python_tools>=2.5.1
+    - mistletoe>=0.7.2
+    - pytest>=6.0.0
+    - pytest-regressions>=2.0.2
+    - typing-extensions>=3.7.4.3
+
+test:
+  imports:
+    - consolekit
+
+about:
+  license: "MIT License"
+  summary: "Additional utilities for click."
+  description: "Additional utilities for click.
+
+
+Before installing please ensure you have added the following channels: domdfcoding, conda-forge
+"
+  home: 'https://github.com/domdfcoding/consolekit'
+  dev_url: 'https://github.com/domdfcoding/consolekit'
+  doc_url: 'https://consolekit.readthedocs.io/en/latest'
+
+extra:
+  maintainers:
+    - 'Dominic Davis-Foster'

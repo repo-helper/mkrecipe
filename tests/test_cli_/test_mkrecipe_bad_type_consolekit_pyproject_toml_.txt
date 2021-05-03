@@ -1,0 +1,4 @@
+Usage: main [OPTIONS] [PROJECT]
+Try 'main -h' for help.
+
+Error: Invalid value for '-t' / '--type': invalid choice: egg. (choose from sdist, wheel)
