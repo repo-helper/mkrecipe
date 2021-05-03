@@ -152,6 +152,8 @@ Contents
 
 	configuration
 	usage
+	contributing
+	Source
 
 .. toctree::
 	:maxdepth: 3
@@ -161,12 +163,6 @@ Contents
 	api/mkrecipe
 	api/*
 
-.. toctree::
-	:maxdepth: 3
-	:caption: Contributing
-
-	contributing
-	Source
 
 .. start links
 
