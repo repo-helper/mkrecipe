@@ -54,7 +54,7 @@ from mkrecipe.config import load_toml
 __author__: str = "Dominic Davis-Foster"
 __copyright__: str = "2020-2021 Dominic Davis-Foster"
 __license__: str = "MIT License"
-__version__: str = "0.2.0"
+__version__: str = "0.3.0"
 __email__: str = "dominic@davis-foster.co.uk"
 
 __all__ = ["MaryBerry", "make_recipe"]
@@ -128,7 +128,7 @@ class MaryBerry:
 		"""
 		Make the recipe for creating a conda package from a wheel.
 
-		.. versionadded:: 0.3.0 (undocumented)
+		.. versionadded:: 0.3.0
 
 		:returns: The ``meta.yaml`` recipe as a string.
 		"""
@@ -183,7 +183,7 @@ class MaryBerry:
 		"""
 		Returns the URL of the project's binary wheel on PyPI.
 
-		.. versionadded:: 0.3.0 (undocumented)
+		.. versionadded:: 0.3.0
 		"""
 
 		wheel_url = self._try_again(get_wheel_url)
