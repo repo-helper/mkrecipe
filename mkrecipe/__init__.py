@@ -27,11 +27,12 @@ A tool to create recipes for building conda packages from distributions on PyPI.
 #
 
 # stdlib
+import os
 import re
 import time
 from itertools import chain
 from operator import methodcaller
-from typing import Any, Dict, Iterable, List, Union
+from typing import Any, Callable, Dict, Iterable, List, Union
 
 # 3rd party
 import click
@@ -57,6 +58,9 @@ __version__: str = "0.2.0"
 __email__: str = "dominic@davis-foster.co.uk"
 
 __all__ = ["MaryBerry", "make_recipe"]
+
+RETRIES = int(os.environ.get("MKRECIPE_HTTP_RETRIES", 3)) + 1
+RETRY_DELAY = int(os.environ.get("MKRECIPE_RETRY_DELAY", 10))
 
 
 class MaryBerry:
@@ -124,6 +128,8 @@ class MaryBerry:
 		"""
 		Make the recipe for creating a conda package from a wheel.
 
+		.. versionadded:: 0.3.0 (undocumented)
+
 		:returns: The ``meta.yaml`` recipe as a string.
 		"""
 
@@ -164,18 +170,7 @@ class MaryBerry:
 		Returns the URL of the project's source distribution on PyPI.
 		"""
 
-		for retry in range(0, 4):
-			# TODO: perhaps add an option or environment variable
-			try:
-				sdist_url = get_sdist_url(self.config["name"], self.config["version"])
-				break
-			except InvalidRequirement as e:  # pragma: no cover
-				click.echo(f"{e} Trying again in 10s", err=True)
-				time.sleep(10)
-		else:
-			raise InvalidRequirement(
-					f"Cannot find {self.config['name']} version {self.config['version']} on PyPI."
-					)
+		sdist_url = self._try_again(get_sdist_url)
 
 		if not sdist_url.endswith(".tar.gz"):
 			raise InvalidRequirement(
@@ -187,21 +182,11 @@ class MaryBerry:
 	def get_wheel_url(self) -> str:
 		"""
 		Returns the URL of the project's binary wheel on PyPI.
+
+		.. versionadded:: 0.3.0 (undocumented)
 		"""
 
-		for retry in range(0, 4):
-			# TODO: perhaps add an option or environment variable
-			try:
-
-				wheel_url = get_wheel_url(self.config["name"], self.config["version"])
-				break
-			except InvalidRequirement as e:  # pragma: no cover
-				click.echo(f"{e} Trying again in 10s", err=True)
-				time.sleep(10)
-		else:
-			raise InvalidRequirement(
-					f"Cannot find {self.config['name']} version {self.config['version']} on PyPI."
-					)
+		wheel_url = self._try_again(get_wheel_url)
 
 		if not wheel_url.endswith(".whl"):
 			raise InvalidRequirement(
@@ -209,6 +194,17 @@ class MaryBerry:
 					)
 
 		return wheel_url
+
+	def _try_again(self, func: Callable[[str, Union[str, int, Version]], str]):
+		for retry in range(0, RETRIES):
+			try:
+				url = func(self.config["name"], self.config["version"])
+				return url
+			except InvalidRequirement as e:  # pragma: no cover
+				click.echo(f"{e} Trying again in 10s", err=True)
+				time.sleep(RETRY_DELAY)
+
+		raise InvalidRequirement(f"Cannot find {self.config['name']} version {self.config['version']} on PyPI.")
 
 	def get_runtime_requirements(self) -> List[ComparableRequirement]:
 		"""
