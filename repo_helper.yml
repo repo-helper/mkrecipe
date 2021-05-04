@@ -7,7 +7,7 @@ email: 'dominic@davis-foster.co.uk'
 username: 'repo-helper'
 assignee: 'domdfcoding'
 primary_conda_channel: "domdfcoding"
-version: '0.2.0'
+version: '0.3.0'
 license: 'MIT'
 short_desc: 'A tool to create recipes for building conda packages from distributions on PyPI.'
 
@@ -55,3 +55,8 @@ keywords:
 
 manifest_additional:
  - include mkrecipe/recipe_template.ymlt
+
+exclude_files:
+ - contributing
+
+preserve_custom_theme: true
