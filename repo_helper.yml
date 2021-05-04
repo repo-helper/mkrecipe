@@ -55,3 +55,8 @@ keywords:
 
 manifest_additional:
  - include mkrecipe/recipe_template.ymlt
+
+exclude_files:
+ - contributing
+
+preserve_custom_theme: true

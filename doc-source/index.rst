@@ -152,7 +152,6 @@ Contents
 
 	configuration
 	usage
-	contributing
 	Source
 
 .. toctree::
