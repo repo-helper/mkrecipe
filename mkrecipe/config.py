@@ -160,10 +160,16 @@ class MkrecipeParser(AbstractConfigParser):
 		return license_key
 
 	def parse_conda_channels(self, config: Dict[str, TOML_TYPES]) -> List[str]:
-		"""
+		r"""
 		Parse the ``conda-channels`` key, giving a list of required conda channels to build and install the package.
 
 		:param config: The unparsed TOML config for the ``[tool.mkrecipe]`` table.
+
+		:rtype:
+
+		.. raw:: latex
+
+			\clearpage
 		"""
 
 		python_implementations = config["conda-channels"]
@@ -177,8 +183,8 @@ class MkrecipeParser(AbstractConfigParser):
 		"""
 		Parse the ``extras`` key, giving a list of extras to include as requirements in the conda package.
 
-		| The special keyword ``'all'`` indicates all extras should be included.
-		| The special keyword ``'none'`` indicates no extras should be included.
+		* The special keyword ``'all'`` indicates all extras should be included.
+		* The special keyword ``'none'`` indicates no extras should be included.
 
 		:param config: The unparsed TOML config for the ``[tool.mkrecipe]`` table.
 		"""

@@ -55,6 +55,11 @@ under ``project.requirements``.
 		license-key = "MIT"
 
 
+.. raw:: latex
+
+	\clearpage
+
+
 .. conf:: conda-channels
 
 	**Type**: :class:`list`\[:class:`str`\]
@@ -80,8 +85,8 @@ under ``project.requirements``.
 
 	A list of extras (AKA optional dependencies) to include as requirements in the conda package.
 
-	| The special keyword ``'all'`` indicates all extras should be included.
-	| The special keyword ``'none'`` indicates no extras should be included.
+	* The special keyword ``'all'`` indicates all extras should be included.
+	* The special keyword ``'none'`` indicates no extras should be included.
 
 	Defaults to ``'none'`` if unspecified.
 
@@ -101,6 +106,7 @@ under ``project.requirements``.
 		[tool.mkrecipe]
 		extras = "all"
 
+-----
 
 ``package`` and ``license-key`` can also be read from the ``[tool.whey]`` table if you use
 `whey <https://whey.readthedocs.io/en/latest>`_ as the build backend and have defined those values there.

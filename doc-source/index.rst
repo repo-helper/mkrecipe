@@ -5,6 +5,7 @@ mkrecipe
 .. start short_desc
 
 .. documentation-summary::
+	:meta:
 
 .. end short_desc
 
@@ -147,21 +148,18 @@ Contents
 
 .. toctree::
 	:maxdepth: 3
-	:caption: Documentation
-	:glob:
 
 	configuration
 	usage
+	api/index
 	Source
 
-.. toctree::
-	:maxdepth: 3
-	:caption: API Reference
-	:glob:
 
-	api/mkrecipe
-	api/*
+.. sidebar-links::
+	:github:
+	:pypi: mkrecipe
 
+	Contributing Guide<https://contributing.repo-helper.uk>
 
 .. start links
 
@@ -169,6 +167,6 @@ Contents
 
 	View the :ref:`Function Index <genindex>` or browse the `Source Code <_modules/index.html>`__.
 
-	`Browse the GitHub Repository <https://github.com/repo-helper/mkrecipe>`__
+	:github:repo:`Browse the GitHub Repository <repo-helper/mkrecipe>`
 
 .. end links
