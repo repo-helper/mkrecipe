@@ -1,4 +1,5 @@
 # 3rd party
+import click
 import pytest
 from coincidence.regressions import AdvancedFileRegressionFixture
 from consolekit.testing import CliRunner, Result
@@ -121,7 +122,22 @@ def test_mkrecipe_wheel(tmp_pathplus, pyproject_file, advanced_file_regression: 
 				"mathematical.pyproject.toml",
 				]
 		)
-def test_mkrecipe_bad_type(tmp_pathplus, pyproject_file, advanced_file_regression: AdvancedFileRegressionFixture):
+@pytest.mark.parametrize("click_ver", [
+		pytest.param(
+				"8",
+				marks=pytest.mark.skipif(click.__version__.split(".")[0] == "7", reason="Output differs with click 8"),
+				),
+		pytest.param(
+				"7",
+				marks=pytest.mark.skipif(click.__version__.split(".")[0] != "7", reason="Output differs with click 8"),
+				),
+		])
+def test_mkrecipe_bad_type(
+		tmp_pathplus,
+		pyproject_file,
+		advanced_file_regression: AdvancedFileRegressionFixture,
+		click_ver,
+		):
 	(tmp_pathplus / "pyproject.toml").write_text((configs_dir / pyproject_file).read_text())
 	(tmp_pathplus / "requirements.txt").write_lines([
 			"click>=7.1.2",

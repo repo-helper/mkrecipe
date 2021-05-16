@@ -60,3 +60,8 @@ exclude_files:
  - contributing
 
 preserve_custom_theme: true
+
+third_party_version_matrix:
+ click:
+  - 7
+  - 8
