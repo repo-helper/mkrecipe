@@ -112,6 +112,13 @@ def test_mkrecipe_wheel(tmp_pathplus, pyproject_file, advanced_file_regression: 
 	advanced_file_regression.check_file(tmp_pathplus / "conda" / "meta.yaml")
 
 
+_click_major_ver = click.__version__.split('.')[0]
+
+
+def _param(label: str, expr: bool):
+	return pytest.param(label, marks=pytest.mark.skipif(expr, reason="Output differs with click 8"))
+
+
 @pytest.mark.parametrize(
 		"pyproject_file",
 		[
@@ -122,16 +129,7 @@ def test_mkrecipe_wheel(tmp_pathplus, pyproject_file, advanced_file_regression: 
 				"mathematical.pyproject.toml",
 				]
 		)
-@pytest.mark.parametrize("click_ver", [
-		pytest.param(
-				"8",
-				marks=pytest.mark.skipif(click.__version__.split(".")[0] == "7", reason="Output differs with click 8"),
-				),
-		pytest.param(
-				"7",
-				marks=pytest.mark.skipif(click.__version__.split(".")[0] != "7", reason="Output differs with click 8"),
-				),
-		])
+@pytest.mark.parametrize("click_ver", [_param('8', _click_major_ver == '7'), _param('7', _click_major_ver != '7')])
 def test_mkrecipe_bad_type(
 		tmp_pathplus,
 		pyproject_file,
