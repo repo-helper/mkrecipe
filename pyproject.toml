@@ -76,6 +76,7 @@ extensions = [
     "sphinx_click",
     "configconfig.autoconfig",
     "html_section",
+    "autosummary_widths",
 ]
 sphinxemoji_style = "twemoji"
 gitstamp_fmt = "%d %b %Y"

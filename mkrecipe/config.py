@@ -4,9 +4,8 @@
 """
 :pep:`621` configuration parser.
 
-.. versionchanged:: 0.2.0
-
-	``BuildSystemParser`` moved to :mod:`pyproject_parser.parsers`
+.. versionchanged:: 0.2.0  ``BuildSystemParser`` moved to :mod:`pyproject_parser.parsers`
+.. autosummary-widths:: 5/16 11/16
 """
 #
 #  Copyright © 2021 Dominic Davis-Foster <dominic@davis-foster.co.uk>
@@ -124,6 +123,8 @@ class PEP621Parser(whey.config.PEP621Parser):
 class MkrecipeParser(AbstractConfigParser):
 	"""
 	Parser for the ``[tool.mkrecipe]`` table from ``pyproject.toml``.
+
+	.. autosummary-widths:: 6/16 10/16
 	"""
 
 	table_name = ("tool", "mkrecipe")
@@ -163,13 +164,9 @@ class MkrecipeParser(AbstractConfigParser):
 		r"""
 		Parse the ``conda-channels`` key, giving a list of required conda channels to build and install the package.
 
+		.. latex:vspace:: -10px
+
 		:param config: The unparsed TOML config for the ``[tool.mkrecipe]`` table.
-
-		:rtype:
-
-		.. raw:: latex
-
-			\clearpage
 		"""
 
 		python_implementations = config["conda-channels"]

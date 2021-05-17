@@ -40,6 +40,7 @@ extra_sphinx_extensions:
  - sphinx_click
  - configconfig.autoconfig
  - html_section
+ - autosummary_widths
 
 classifiers:
  - 'Development Status :: 4 - Beta'

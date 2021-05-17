@@ -3,6 +3,9 @@
 #  __init__.py
 """
 A tool to create recipes for building conda packages from distributions on PyPI.
+
+.. autosummary-widths:: 7/16 9/16
+.. latex:vspace:: -5px
 """
 #
 #  Copyright © 2020-2021 Dominic Davis-Foster <dominic@davis-foster.co.uk>
@@ -69,6 +72,9 @@ class MaryBerry:
 	Builder of Conda ``meta.yaml`` recipes.
 
 	:param project_dir: The project directory.
+
+	.. autosummary-widths:: 6/16 10/16
+	.. latex:vspace:: -5px
 	"""
 
 	def __init__(self, project_dir: PathLike) -> None:
