@@ -64,9 +64,7 @@ autodoc_default_options = {
 		"exclude-members": ','.join(config["autodoc_exclude_members"]),
 		}
 
-latex_elements = {
-		"printindex": "\\begin{flushleft}\n\\printindex\n\\end{flushleft}",
-		}
+latex_elements = {}
 
 
 def setup(app):
