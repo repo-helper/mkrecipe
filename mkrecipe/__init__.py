@@ -4,7 +4,9 @@
 """
 A tool to create recipes for building conda packages from distributions on PyPI.
 
-.. autosummary-widths:: 7/16 9/16
+.. autosummary-widths:: 7/16
+	:html: 4/10
+
 .. latex:vspace:: -5px
 """
 #
@@ -73,7 +75,9 @@ class MaryBerry:
 
 	:param project_dir: The project directory.
 
-	.. autosummary-widths:: 6/16 10/16
+	.. autosummary-widths:: 6/16
+		:html: 7/20
+
 	.. latex:vspace:: -5px
 	"""
 
@@ -224,6 +228,8 @@ class MaryBerry:
 
 		extra_requirements = [ComparableRequirement(r) for r in extras]
 
+		# TODO: handle extras from the dependencies. Lookup the requirements in the wheel metadata.
+		#  Perhaps wait until exposed in PyPI API
 		all_requirements = prepare_requirements(chain(self.config["dependencies"], extra_requirements))
 		all_requirements = validate_requirements(all_requirements, self.config["conda-channels"])
 

@@ -75,8 +75,9 @@ extensions = [
     "seed_intersphinx_mapping",
     "sphinx_click",
     "configconfig.autoconfig",
-    "html_section",
-    "autosummary_widths",
+    "sphinx_toolbox_experimental.html_section",
+    "sphinx_toolbox_experimental.autosummary_widths",
+    "sphinx_toolbox_experimental.peps",
 ]
 sphinxemoji_style = "twemoji"
 gitstamp_fmt = "%d %b %Y"
@@ -98,7 +99,6 @@ toctree_plus_types = [
     "exception",
     "flag",
     "function",
-    "method",
     "namedtuple",
     "protocol",
     "role",

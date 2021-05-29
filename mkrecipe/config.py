@@ -5,7 +5,9 @@
 :pep:`621` configuration parser.
 
 .. versionchanged:: 0.2.0  ``BuildSystemParser`` moved to :mod:`pyproject_parser.parsers`
-.. autosummary-widths:: 5/16 11/16
+
+.. autosummary-widths:: 5/16
+	:html: 3/10
 """
 #
 #  Copyright © 2021 Dominic Davis-Foster <dominic@davis-foster.co.uk>
@@ -124,7 +126,8 @@ class MkrecipeParser(AbstractConfigParser):
 	"""
 	Parser for the ``[tool.mkrecipe]`` table from ``pyproject.toml``.
 
-	.. autosummary-widths:: 6/16 10/16
+	.. autosummary-widths:: 6/16
+		:html: 7/20
 	"""
 
 	table_name = ("tool", "mkrecipe")

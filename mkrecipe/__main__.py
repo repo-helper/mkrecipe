@@ -33,7 +33,7 @@ from typing import TYPE_CHECKING
 # 3rd party
 import click
 from consolekit import click_command
-from consolekit.options import auto_default_option
+from consolekit.options import DescribedArgument, auto_default_option
 from consolekit.tracebacks import handle_tracebacks, traceback_option
 
 if TYPE_CHECKING:
@@ -54,7 +54,13 @@ __all__ = ["main"]
 		show_default=True,
 		)
 @auto_default_option("-o", "--outfile", type=click.STRING, help="The output file.", show_default=True)
-@click.argument("project", type=click.STRING, default='.')
+@click.argument(
+		"project",
+		type=click.STRING,
+		default='.',
+		description="The project to create the recipe for.",
+		cls=DescribedArgument,
+		)
 @click_command()
 def main(
 		project: "PathLike" = '.',

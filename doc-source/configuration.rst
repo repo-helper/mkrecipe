@@ -11,11 +11,11 @@ Configuration
 The metadata used by ``mkrecipe`` is defined in the ``[project]`` table, per :pep:`621`;
 see that document for more details on the keys and their values.
 
-As a minimum, the table should contain the keys ``name`` and ``version``.
-It is recommended to define ``description``, ``authors`` and ``urls``.
-If you list your project's requirements in a ``requirements.txt`` file, list ``dependencies`` as
-`dynamic <https://www.python.org/dev/peps/pep-0621/#dynamic>`_; otherwise, they should be listed
-under ``project.requirements``.
+As a minimum, the table should contain the keys :pep621:`name` and :pep621:`version`.
+It is recommended to define :pep621:`description`, :pep621:`authors` and :pep621:`urls`.
+If you list your project's requirements in a ``requirements.txt`` file,
+list :pep621:`dependencies` as :pep621:`dynamic`; otherwise, they should be listed
+under :pep621:`project.requirements <requirements>`.
 
 
 ``[tool.mkrecipe]``
@@ -26,7 +26,7 @@ under ``project.requirements``.
 	**Type**: :class:`str`
 
 	The name of the package ``conda-build`` should import to check the package built correctly
-	This defaults to `project.name <https://www.python.org/dev/peps/pep-0621/#name>`_ if unspecified.
+	This defaults to :pep621:`project.name <name>` if unspecified.
 
 	**Example**:
 
@@ -43,9 +43,13 @@ under ``project.requirements``.
 
 	**Type**: :class:`str`
 
-	An identifier giving the project's license. This is used for the `License <https://packaging.python.org/specifications/core-metadata/#license>`_ field in the Core Metadata, and to add the appropriate `trove classifier <https://pypi.org/classifiers/>`_.
+	An identifier giving the project's license. This is used for the :core-meta:`License`
+	field in the Core Metadata, and to add the appropriate `trove classifier`_.
 
-	It is recommended to use an `SPDX Identifier <https://spdx.org/licenses/>`_, but note that not all map to classifiers.
+	It is recommended to use an `SPDX Identifier`_, but note that not all map to classifiers.
+
+	.. _trove classifier: https://pypi.org/classifiers/
+	.. _SPDX Identifier: https://spdx.org/licenses/
 
 	**Example**:
 
@@ -108,6 +112,6 @@ under ``project.requirements``.
 
 -----
 
-``package`` and ``license-key`` can also be read from the ``[tool.whey]`` table if you use
+:conf:`package` and :conf:`license-key` can also be read from the ``[tool.whey]`` table if you use
 `whey <https://whey.readthedocs.io/en/latest>`_ as the build backend and have defined those values there.
 See the `whey documentation <https://whey.readthedocs.io/en/latest>`_ for more details.
