@@ -133,7 +133,7 @@ class MkrecipeParser(AbstractConfigParser):
 	table_name = ("tool", "mkrecipe")
 
 	# Don't add any options shared with tool.whey
-	defaults = {"extras": "none", "conda-channels": ["conda-forge"]}
+	defaults = {"extras": "none", "conda-channels": ("conda-forge", )}
 
 	def parse_package(self, config: Dict[str, TOML_TYPES]) -> str:
 		"""
@@ -165,19 +165,19 @@ class MkrecipeParser(AbstractConfigParser):
 
 	def parse_conda_channels(self, config: Dict[str, TOML_TYPES]) -> List[str]:
 		r"""
-		Parse the ``conda-channels`` key, giving a list of required conda channels to build and install the package.
+		Parse the ``conda-channels`` key, giving a list of required conda channels to build and use the package.
 
 		.. latex:vspace:: -10px
 
 		:param config: The unparsed TOML config for the ``[tool.mkrecipe]`` table.
 		"""
 
-		python_implementations = config["conda-channels"]
+		channels = config["conda-channels"]
 
-		for idx, impl in enumerate(python_implementations):
+		for idx, impl in enumerate(channels):
 			self.assert_indexed_type(impl, str, [*self.table_name, "conda-channels"], idx=idx)
 
-		return python_implementations
+		return channels
 
 	def parse_extras(self, config: Dict[str, TOML_TYPES]) -> Union[Literal["all"], Literal["none"], List[str]]:
 		"""
@@ -189,15 +189,15 @@ class MkrecipeParser(AbstractConfigParser):
 		:param config: The unparsed TOML config for the ``[tool.mkrecipe]`` table.
 		"""
 
-		python_implementations = config["extras"]
+		extras = config["extras"]
 
 		path_elements = [*self.table_name, "extras"]
 
-		if isinstance(python_implementations, str):
-			python_implementations_lower = python_implementations.lower()
-			if python_implementations_lower == "all":
+		if isinstance(extras, str):
+			extras_lower = extras.lower()
+			if extras_lower == "all":
 				return "all"
-			elif python_implementations_lower == "none":
+			elif extras_lower == "none":
 				return "none"
 			else:
 				raise BadConfigError(
@@ -205,10 +205,10 @@ class MkrecipeParser(AbstractConfigParser):
 						"Expected 'all', 'none' or a list of strings."
 						)
 
-		for idx, impl in enumerate(python_implementations):
+		for idx, impl in enumerate(extras):
 			self.assert_indexed_type(impl, str, path_elements, idx=idx)
 
-		return python_implementations
+		return extras
 
 	@property
 	def keys(self) -> List[str]:
