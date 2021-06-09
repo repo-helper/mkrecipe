@@ -56,3 +56,4 @@ package = "sphinx_toolbox"
 
 [tool.mkrecipe]
 conda-channels = [ "domdfcoding", "conda-forge",]
+extras = "all"

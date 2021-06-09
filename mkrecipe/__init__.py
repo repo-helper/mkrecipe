@@ -223,10 +223,15 @@ class MaryBerry:
 
 		extras = []
 
-		for extra in self.config["extras"]:
-			extras.extend(list(map(str, self.config["optional-dependencies"].get(extra, ()))))
+		if self.config["extras"] == "all":
+			extras.extend(chain.from_iterable(self.config["optional-dependencies"].values()))
+		elif self.config["extras"] == "none":
+			pass
+		else:
+			for extra in self.config["extras"]:
+				extras.extend(list(self.config["optional-dependencies"].get(extra, ())))
 
-		extra_requirements = [ComparableRequirement(r) for r in extras]
+		extra_requirements = [ComparableRequirement(str(r)) for r in extras]
 
 		# TODO: handle extras from the dependencies. Lookup the requirements in the wheel metadata.
 		#  Perhaps wait until exposed in PyPI API

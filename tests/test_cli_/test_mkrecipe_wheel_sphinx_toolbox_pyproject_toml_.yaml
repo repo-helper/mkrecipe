@@ -19,6 +19,9 @@ requirements:
     - deprecation-alias>=0.1.1
     - domdf_python_tools>=2.5.1
     - mistletoe>=0.7.2
+    - pygments>=2.7.4
+    - pytest>=6.0.0
+    - pytest-regressions>=2.2.0
     - setuptools
     - typing-extensions>=3.7.4.3
     - wheel
@@ -29,6 +32,9 @@ requirements:
     - deprecation-alias>=0.1.1
     - domdf_python_tools>=2.5.1
     - mistletoe>=0.7.2
+    - pygments>=2.7.4
+    - pytest>=6.0.0
+    - pytest-regressions>=2.2.0
     - typing-extensions>=3.7.4.3
 
 test:
