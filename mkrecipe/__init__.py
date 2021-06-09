@@ -48,7 +48,7 @@ from first import first
 from jinja2 import BaseLoader, Environment, StrictUndefined
 from packaging.requirements import InvalidRequirement
 from packaging.version import Version
-from shippinglabel.conda import prepare_requirements, validate_requirements
+from shippinglabel.conda import make_conda_description, prepare_requirements, validate_requirements
 from shippinglabel.pypi import get_pypi_releases, get_sdist_url
 from shippinglabel.requirements import ComparableRequirement, combine_requirements
 from whey.config.whey import license_lookup
@@ -268,16 +268,7 @@ class MaryBerry:
 		Create a description for the Conda package from its summary and a list of channels required to install it.
 		"""
 
-		conda_description = self.config["description"]
-		conda_channels = tuple(self.config["conda-channels"])
-
-		if conda_channels:
-			conda_description += "\n\n\n"
-			conda_description += "Before installing please ensure you have added the following channels: "
-			conda_description += ", ".join(conda_channels)
-			conda_description += '\n'
-
-		return conda_description
+		return make_conda_description(self.config["description"], self.config["conda-channels"])
 
 	def get_urls(self) -> Iterable[str]:
 		"""
