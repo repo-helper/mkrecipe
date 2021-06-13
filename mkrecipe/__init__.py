@@ -55,6 +55,7 @@ from whey.config.whey import license_lookup
 
 # this package
 from mkrecipe.config import load_toml
+from shippinglabel.pypi import get_wheel_url
 
 __author__: str = "Dominic Davis-Foster"
 __copyright__: str = "2020-2021 Dominic Davis-Foster"
@@ -297,33 +298,3 @@ def make_recipe(project_dir: PathLike, recipe_file: PathLike) -> None:
 	recipe_file = PathPlus(recipe_file)
 	recipe_file.parent.maybe_make(parents=True)
 	recipe_file.write_clean(MaryBerry(project_dir).make())
-
-
-def get_wheel_url(name: str, version: Union[str, int, Version]) -> str:
-	"""
-	Returns the URL of the project's source distribution on PyPI.
-
-	.. versionadded:: 0.3.0 (undocumented)
-
-	:param name:
-	:param version:
-
-	.. attention:: If no wheel distribution is found this function may return a source distribution.
-	"""
-
-	releases = get_pypi_releases(str(name))
-	version = str(version)
-
-	if version not in releases:
-		raise InvalidRequirement(f"Cannot find version {version} on PyPI.")
-
-	download_urls = releases[version]
-
-	if not download_urls:
-		raise ValueError(f"Version {version} has no files on PyPI.")
-
-	return first(
-			download_urls,
-			key=methodcaller("endswith", ".whl"),
-			default=download_urls[0],
-			)
