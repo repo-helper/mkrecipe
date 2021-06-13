@@ -221,7 +221,7 @@ class MaryBerry:
 		Returns a list of the project's runtime requirements.
 		"""
 
-		extras = []
+		extras: List[Union[str, ComparableRequirement]] = []
 
 		if self.config["extras"] == "all":
 			extras.extend(chain.from_iterable(self.config["optional-dependencies"].values()))
