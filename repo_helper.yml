@@ -42,6 +42,7 @@ extra_sphinx_extensions:
  - sphinx_toolbox_experimental.html_section
  - sphinx_toolbox_experimental.autosummary_widths
  - sphinx_toolbox_experimental.peps
+ - sphinx_toolbox_experimental.toml
 
 classifiers:
  - 'Development Status :: 4 - Beta'

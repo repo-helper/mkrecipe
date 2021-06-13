@@ -23,12 +23,12 @@ under :pep621:`project.requirements <requirements>`.
 
 .. conf:: package
 
-	**Type**: :class:`str`
+	**Type**: :toml:`String`
 
 	The name of the package ``conda-build`` should import to check the package built correctly
 	This defaults to :pep621:`project.name <name>` if unspecified.
 
-	**Example**:
+	:bold-title:`Example:`
 
 	.. code-block:: TOML
 
@@ -41,7 +41,7 @@ under :pep621:`project.requirements <requirements>`.
 
 .. conf:: license-key
 
-	**Type**: :class:`str`
+	**Type**: :toml:`String`
 
 	An identifier giving the project's license. This is used for the :core-meta:`License`
 	field in the Core Metadata, and to add the appropriate `trove classifier`_.
@@ -51,7 +51,7 @@ under :pep621:`project.requirements <requirements>`.
 	.. _trove classifier: https://pypi.org/classifiers/
 	.. _SPDX Identifier: https://spdx.org/licenses/
 
-	**Example**:
+	:bold-title:`Example:`
 
 	.. code-block:: TOML
 
@@ -66,12 +66,12 @@ under :pep621:`project.requirements <requirements>`.
 
 .. conf:: conda-channels
 
-	**Type**: :class:`list`\[:class:`str`\]
+	**Type**: :toml:`Array` of :toml:`strings <String>`
 
 	A list of `conda channels <https://docs.conda.io/projects/conda/en/latest/user-guide/concepts/channels.html>`_.
 	which provide the project's dependencies. Defaults to ``['conda-forge']`` if unspecified.
 
-	**Example**:
+	:bold-title:`Example:`
 
 	.. code-block:: TOML
 
@@ -85,16 +85,17 @@ under :pep621:`project.requirements <requirements>`.
 
 .. conf:: extras
 
-	**Type**: :class:`list`\[:class:`str`\] *or* the strings ``'all'`` or ``'none'``.
+	**Type**: :toml:`Array` of :toml:`strings <String>` *or* the strings ``'all'`` or ``'none'``.
 
-	A list of extras (AKA optional dependencies) to include as requirements in the conda package.
+	A list of extras (AKA :pep621:`optional dependencies <optional-dependencies>`)
+	to include as requirements in the conda package.
 
 	* The special keyword ``'all'`` indicates all extras should be included.
 	* The special keyword ``'none'`` indicates no extras should be included.
 
 	Defaults to ``'none'`` if unspecified.
 
-	**Examples**:
+	:bold-title:`Examples:`
 
 	.. code-block:: TOML
 
