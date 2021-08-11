@@ -72,3 +72,6 @@ third_party_version_matrix:
 
 tox_unmanaged:
  - flake8
+
+mypy_deps:
+ - types-first
