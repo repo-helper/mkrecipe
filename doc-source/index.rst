@@ -136,10 +136,12 @@ Installation
 
 .. end installation
 
+
 Contents
 -----------
 
 .. html-section::
+
 
 .. toctree::
 	:hidden:
@@ -153,13 +155,14 @@ Contents
 	usage
 	api/index
 	Source
-
+	license
 
 .. sidebar-links::
 	:github:
 	:pypi: mkrecipe
 
 	Contributing Guide<https://contributing.repo-helper.uk>
+
 
 .. start links
 
