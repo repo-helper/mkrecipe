@@ -73,7 +73,7 @@ under :pep621:`project.requirements <requirements>`.
 
 	:bold-title:`Example:`
 
-	.. code-block:: TOML
+	.. code-block:: toml
 
 		[tool.mkrecipe]
 		conda-channels = [
@@ -97,7 +97,7 @@ under :pep621:`project.requirements <requirements>`.
 
 	:bold-title:`Examples:`
 
-	.. code-block:: TOML
+	.. code-block:: toml
 
 		[tool.mkrecipe]
 		extras = [
