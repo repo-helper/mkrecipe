@@ -200,8 +200,6 @@ def test_mkrecipe_parser_valid_config(
 		])
 def test_mkrecipe_parser_invalid_extras(
 		toml_config: str,
-		tmp_pathplus: PathPlus,
-		advanced_data_regression: AdvancedDataRegressionFixture,
 		):
 
 	with pytest.raises(BadConfigError, match=r"Invalid value for \[tool.mkrecipe.extras\]: "):
