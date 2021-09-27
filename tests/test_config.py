@@ -198,9 +198,7 @@ def test_mkrecipe_parser_valid_config(
 @pytest.mark.parametrize("toml_config", [
 		pytest.param('[tool.mkrecipe]\nextras = "cli"', id="extras_cli"),
 		])
-def test_mkrecipe_parser_invalid_extras(
-		toml_config: str,
-		):
+def test_mkrecipe_parser_invalid_extras(toml_config: str, ):
 
 	with pytest.raises(BadConfigError, match=r"Invalid value for \[tool.mkrecipe.extras\]: "):
 		MkrecipeParser().parse(dom_toml.loads(toml_config)["tool"]["mkrecipe"])
