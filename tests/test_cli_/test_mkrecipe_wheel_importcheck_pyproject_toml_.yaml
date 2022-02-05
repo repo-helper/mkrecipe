@@ -13,7 +13,7 @@ requirements:
     - wheel
   host:
     - pip
-    - python
+    - python>=3.7.2
     - click>=7.1.2
     - colorama>=0.4.3
     - deprecation-alias>=0.1.1
@@ -23,7 +23,7 @@ requirements:
     - typing-extensions>=3.7.4.3
     - wheel
   run:
-    - python
+    - python>=3.7.2
     - click>=7.1.2
     - colorama>=0.4.3
     - deprecation-alias>=0.1.1

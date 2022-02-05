@@ -17,7 +17,7 @@ requirements:
     - whey
   host:
     - pip
-    - python
+    - python>=3.6
     - click>=7.1.2
     - colorama>=0.4.3
     - deprecation-alias>=0.1.1
@@ -31,7 +31,7 @@ requirements:
     - wheel
     - whey
   run:
-    - python
+    - python>=3.6
     - click>=7.1.2
     - colorama>=0.4.3
     - deprecation-alias>=0.1.1

@@ -19,10 +19,10 @@ requirements:
 {% for requirement in requires %}    - {{ requirement }}
 {% endfor %}  host:
     - pip
-    - python
+    - python{{ requires_python }}
 {% for requirement in host_requirements %}    - {{ requirement }}
 {% endfor %}  run:
-    - python
+    - python{{ requires_python }}
 {% for requirement in runtime_requirements %}    - {{ requirement }}
 {% endfor %}
 test:

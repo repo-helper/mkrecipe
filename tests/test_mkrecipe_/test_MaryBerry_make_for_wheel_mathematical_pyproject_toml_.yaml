@@ -13,13 +13,13 @@ requirements:
     - wheel
   host:
     - pip
-    - python
+    - python>=3.6
     - numpy>=1.19.0
     - scipy
     - setuptools
     - wheel
   run:
-    - python
+    - python>=3.6
     - scipy
     - numpy>=1.19.0
 

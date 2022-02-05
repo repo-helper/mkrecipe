@@ -16,7 +16,7 @@ requirements:
     - wheel>=0.34.2
   host:
     - pip
-    - python
+    - python>=3.6
     - click>=7.1.2
     - coincidence>=0.1.0
     - colorama>=0.4.3
@@ -29,7 +29,7 @@ requirements:
     - typing-extensions>=3.7.4.3
     - wheel>=0.34.2
   run:
-    - python
+    - python>=3.6
     - click>=7.1.2
     - coincidence>=0.1.0
     - colorama>=0.4.3

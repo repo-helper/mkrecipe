@@ -32,14 +32,16 @@
 #
 
 # stdlib
-from typing import Any, Dict, List, Union
+from typing import Any, ClassVar, Dict, List, Union
 
 # 3rd party
 import dom_toml
 import whey.config
 from dom_toml.parser import TOML_TYPES, AbstractConfigParser, BadConfigError, construct_path
+from domdf_python_tools.iterative import natmin
 from domdf_python_tools.paths import PathPlus, in_directory
 from domdf_python_tools.typing import PathLike
+from packaging.specifiers import Specifier
 from pyproject_parser.parsers import BuildSystemParser, name_re
 from pyproject_parser.type_hints import ProjectDict
 from shippinglabel.requirements import ComparableRequirement, combine_requirements, read_requirements
@@ -53,7 +55,10 @@ class PEP621Parser(whey.config.PEP621Parser):
 	Parser for :pep:`621` metadata from ``pyproject.toml``.
 	"""
 
-	defaults = {"description": None}
+	defaults: ClassVar[Dict[str, Any]] = {
+			"description": None,
+			"requires-python": ">=3.6",
+			}
 	factories = {
 			"authors": list,
 			"maintainers": list,
@@ -70,6 +75,7 @@ class PEP621Parser(whey.config.PEP621Parser):
 			"urls",
 			"dependencies",
 			"optional-dependencies",
+			"requires-python",
 			]
 
 	@staticmethod
@@ -253,8 +259,14 @@ def load_toml(filename: PathLike) -> Dict[str, Any]:  # TODO: TypedDict
 	# set defaults
 	parsed_config.setdefault("package", config["project"]["name"].split('.', 1)[0])
 	parsed_config.setdefault("license-key", None)
+	parsed_config.setdefault("python-versions", None)
 
-	if "dependencies" in parsed_config.get("dynamic", []):
+	dynamic_fields = parsed_config.get("dynamic", [])
+
+	if "requires-python" in dynamic_fields and parsed_config["python-versions"]:
+		parsed_config["requires-python"] = Specifier(f">={natmin(parsed_config['python-versions'])}")
+
+	if "dependencies" in dynamic_fields:
 		if (project_dir / "requirements.txt").is_file():
 			dependencies = read_requirements(project_dir / "requirements.txt", include_invalid=True)[0]
 			parsed_config["dependencies"] = sorted(combine_requirements(dependencies))

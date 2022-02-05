@@ -18,6 +18,7 @@ optional-dependencies:
   test:
   - pytest<5.0.0
   - pytest-cov[all]
+requires-python: '>=3.8'
 urls:
   changelog: github.com/me/spam/blob/master/CHANGELOG.md
   documentation: readthedocs.org

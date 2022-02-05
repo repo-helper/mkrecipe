@@ -1,10 +1,10 @@
 package:
   name: "flake8-encodings"
-  version: "0.2.2"
+  version: "0.5.0"
 
 build:
   noarch: python
-  script: "{{ PYTHON }} -m pip install https://files.pythonhosted.org/packages/d9/99/7dd9bb83a37cf0c4c33eb93b69f7305fd986c26a77dfd49d475d27bcd9e5/flake8_encodings-0.2.2-py3-none-any.whl -vv --no-deps"
+  script: "{{ PYTHON }} -m pip install https://files.pythonhosted.org/packages/da/65/ec2450794ef44862a204c44def0f3d9debf9c85a30cfdc9d1ec9f9022fec/flake8_encodings-0.5.0-py3-none-any.whl -vv --no-deps"
 
 requirements:
   build:
@@ -13,7 +13,7 @@ requirements:
     - wheel
   host:
     - pip
-    - python
+    - python>=3.8
     - click>=7.1.2
     - colorama>=0.4.3
     - deprecation-alias>=0.1.1
@@ -23,7 +23,7 @@ requirements:
     - typing-extensions>=3.7.4.3
     - wheel
   run:
-    - python
+    - python>=3.8
     - click>=7.1.2
     - colorama>=0.4.3
     - deprecation-alias>=0.1.1
@@ -33,18 +33,18 @@ requirements:
 
 test:
   imports:
-    - flake8-encodings
+    - flake8_encodings
 
 about:
-
+  license: "MIT License"
   summary: "A Flake8 plugin to identify incorrect use of encodings."
   description: "A Flake8 plugin to identify incorrect use of encodings.
 
 
-Before installing please ensure you have added the following channels: domdfcoding, conda-forge
+Before installing please ensure you have added the following channels: conda-forge, domdfcoding
 "
-  home: 'https://github.com/domdfcoding/flake8-encodings'
-  dev_url: 'https://github.com/domdfcoding/flake8-encodings'
+  home: 'https://github.com/python-formate/flake8-encodings'
+  dev_url: 'https://github.com/python-formate/flake8-encodings'
   doc_url: 'https://flake8-encodings.readthedocs.io/en/latest'
 
 extra:
