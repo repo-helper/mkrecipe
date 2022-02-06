@@ -36,6 +36,9 @@ from consolekit import click_command
 from consolekit.options import DescribedArgument, auto_default_option
 from consolekit.tracebacks import handle_tracebacks, traceback_option
 
+# this package
+from mkrecipe import __version__
+
 if TYPE_CHECKING:
 	# 3rd party
 	from domdf_python_tools.typing import PathLike
@@ -44,6 +47,7 @@ if TYPE_CHECKING:
 __all__ = ["main"]
 
 
+@click.version_option(__version__)
 @traceback_option()
 @auto_default_option(
 		"-t",
