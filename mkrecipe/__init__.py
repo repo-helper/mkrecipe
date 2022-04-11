@@ -36,7 +36,6 @@ import os
 import re
 import time
 from itertools import chain
-from operator import methodcaller
 from typing import Any, Callable, Dict, Iterable, List, Union
 
 # 3rd party
@@ -44,12 +43,11 @@ import click
 from domdf_python_tools.compat import importlib_resources
 from domdf_python_tools.paths import PathPlus
 from domdf_python_tools.typing import PathLike
-from first import first
 from jinja2 import BaseLoader, Environment, StrictUndefined
 from packaging.requirements import InvalidRequirement
 from packaging.version import Version
 from shippinglabel.conda import make_conda_description, prepare_requirements, validate_requirements
-from shippinglabel.pypi import get_pypi_releases, get_sdist_url, get_wheel_url
+from shippinglabel.pypi import get_sdist_url, get_wheel_url
 from shippinglabel.requirements import ComparableRequirement, combine_requirements
 from whey.config.whey import license_lookup
 
