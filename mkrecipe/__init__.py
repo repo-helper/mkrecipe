@@ -205,7 +205,7 @@ class MaryBerry:
 
 		return wheel_url
 
-	def _try_again(self, func: Callable[[str, Union[str, int, Version]], str]):
+	def _try_again(self, func: Callable[[str, Union[str, int, Version]], str]) -> str:
 		for retry in range(0, RETRIES):
 			try:
 				url = func(self.config["name"], self.config["version"])

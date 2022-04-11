@@ -71,7 +71,7 @@ def main(
 		outfile: str = "conda/meta.yaml",
 		artifact_type: "Literal['sdist', 'wheel']" = "sdist",
 		show_traceback: bool = False,
-		):
+		) -> None:
 	"""
 	Make a conda recipe for the given project.
 	"""

@@ -23,7 +23,11 @@ configs_dir = PathPlus(__file__).parent / "configs"
 				"mathematical.pyproject.toml",
 				]
 		)
-def test_mkrecipe(tmp_pathplus, pyproject_file, advanced_file_regression: AdvancedFileRegressionFixture):
+def test_mkrecipe(
+		tmp_pathplus: PathPlus,
+		pyproject_file: str,
+		advanced_file_regression: AdvancedFileRegressionFixture,
+		) -> None:
 	(tmp_pathplus / "pyproject.toml").write_text((configs_dir / pyproject_file).read_text())
 	(tmp_pathplus / "requirements.txt").write_lines([
 			"click>=7.1.2",
@@ -76,7 +80,11 @@ def test_mkrecipe(tmp_pathplus, pyproject_file, advanced_file_regression: Advanc
 				"mathematical.pyproject.toml",
 				]
 		)
-def test_mkrecipe_wheel(tmp_pathplus, pyproject_file, advanced_file_regression: AdvancedFileRegressionFixture):
+def test_mkrecipe_wheel(
+		tmp_pathplus: PathPlus,
+		pyproject_file: str,
+		advanced_file_regression: AdvancedFileRegressionFixture,
+		) -> None:
 	(tmp_pathplus / "pyproject.toml").write_text((configs_dir / pyproject_file).read_text())
 	(tmp_pathplus / "requirements.txt").write_lines([
 			"click>=7.1.2",
@@ -131,11 +139,11 @@ def _param(label: str, expr: bool):
 		)
 @pytest.mark.parametrize("click_ver", [_param('8', _click_major_ver == '7'), _param('7', _click_major_ver != '7')])
 def test_mkrecipe_bad_type(
-		tmp_pathplus,
-		pyproject_file,
+		tmp_pathplus: PathPlus,
+		pyproject_file: str,
 		advanced_file_regression: AdvancedFileRegressionFixture,
-		click_ver,
-		):
+		click_ver: str,
+		) -> None:
 	(tmp_pathplus / "pyproject.toml").write_text((configs_dir / pyproject_file).read_text())
 	(tmp_pathplus / "requirements.txt").write_lines([
 			"click>=7.1.2",
@@ -164,7 +172,7 @@ class TestHandleTracebacks:
 					pytest.param('[tool.whey]\nlicense-key = "MIT"', id="tool.whey"),
 					]
 			)
-	def test_no_project_table(self, toml_config: str, tmp_pathplus: PathPlus):
+	def test_no_project_table(self, toml_config: str, tmp_pathplus: PathPlus) -> None:
 		runner = CliRunner()
 		(tmp_pathplus / "pyproject.toml").write_clean(toml_config)
 		expected_error = pytest.raises(KeyError, match="'project' table not found in .*")
@@ -181,7 +189,7 @@ class TestHandleTracebacks:
 			assert result.exit_code == 1
 			assert result.stdout == "KeyError: \"'project' table not found in 'pyproject.toml'\"\nAborted!\n"
 
-	def test_no_requirements(self, tmp_pathplus: PathPlus):
+	def test_no_requirements(self, tmp_pathplus: PathPlus) -> None:
 		runner = CliRunner()
 		(tmp_pathplus / "pyproject.toml").write_clean(MINIMAL_CONFIG)
 

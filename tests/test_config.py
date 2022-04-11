@@ -56,24 +56,24 @@ def test_pep621_class_valid_config(
 		toml_config: str,
 		tmp_pathplus: PathPlus,
 		advanced_data_regression: AdvancedDataRegressionFixture,
-		):
+		) -> None:
 	(tmp_pathplus / "pyproject.toml").write_clean(toml_config)
 
 	with in_directory(tmp_pathplus):
 		config = PEP621Parser().parse(dom_toml.load(tmp_pathplus / "pyproject.toml")["project"])
 
 	if "dependencies" in config:
-		config["dependencies"] = list(map(str, config["dependencies"]))  # type: ignore
+		config["dependencies"] = list(map(str, config["dependencies"]))  # type: ignore[arg-type]
 	if "optional-dependencies" in config:
 		config["optional-dependencies"] = {
-				k: list(map(str, v))  # type: ignore
+				k: list(map(str, v))  # type: ignore[arg-type]
 				for k, v in config["optional-dependencies"].items()
 				}
 
 	if "requires-python" in config and config["requires-python"] is not None:
-		config["requires-python"] = str(config["requires-python"])  # type: ignore
+		config["requires-python"] = str(config["requires-python"])  # type: ignore[typeddict-item]
 	if "version" in config and config["version"] is not None:
-		config["version"] = str(config["version"])  # type: ignore
+		config["version"] = str(config["version"])  # type: ignore[typeddict-item]
 
 	advanced_data_regression.check(config)
 
@@ -143,7 +143,12 @@ def test_pep621_class_valid_config(
 						),
 				]
 		)
-def test_pep621parser_class_errors(config: str, expects: Type[Exception], match: str, tmp_pathplus: PathPlus):
+def test_pep621parser_class_errors(
+		config: str,
+		expects: Type[Exception],
+		match: str,
+		tmp_pathplus: PathPlus,
+		) -> None:
 	(tmp_pathplus / "pyproject.toml").write_clean(config)
 
 	with in_directory(tmp_pathplus), pytest.raises(expects, match=match):
@@ -163,11 +168,11 @@ def test_buildsystem_parser_valid_config(
 		toml_config: str,
 		tmp_pathplus: PathPlus,
 		advanced_data_regression: AdvancedDataRegressionFixture,
-		):
+		) -> None:
 	(tmp_pathplus / "pyproject.toml").write_clean(toml_config)
 	config = BuildSystemParser().parse(dom_toml.load(tmp_pathplus / "pyproject.toml")["build-system"])
 
-	config["requires"] = list(map(str, config["requires"]))  # type: ignore
+	config["requires"] = list(map(str, config["requires"]))  # type: ignore[arg-type]
 
 	advanced_data_regression.check(config)
 
@@ -189,7 +194,7 @@ def test_mkrecipe_parser_valid_config(
 		toml_config: str,
 		tmp_pathplus: PathPlus,
 		advanced_data_regression: AdvancedDataRegressionFixture,
-		):
+		) -> None:
 	(tmp_pathplus / "pyproject.toml").write_clean(toml_config)
 	config = MkrecipeParser().parse(dom_toml.load(tmp_pathplus / "pyproject.toml")["tool"]["mkrecipe"])
 	advanced_data_regression.check(config)
@@ -198,7 +203,7 @@ def test_mkrecipe_parser_valid_config(
 @pytest.mark.parametrize("toml_config", [
 		pytest.param('[tool.mkrecipe]\nextras = "cli"', id="extras_cli"),
 		])
-def test_mkrecipe_parser_invalid_extras(toml_config: str, ):
+def test_mkrecipe_parser_invalid_extras(toml_config: str) -> None:
 
 	with pytest.raises(BadConfigError, match=r"Invalid value for \[tool.mkrecipe.extras\]: "):
 		MkrecipeParser().parse(dom_toml.loads(toml_config)["tool"]["mkrecipe"])
@@ -212,14 +217,14 @@ def test_mkrecipe_parser_invalid_extras(toml_config: str, ):
 				pytest.param('[tool.whey]\nlicense-key = "MIT"', id="tool.whey"),
 				]
 		)
-def test_load_toml_no_project_table(toml_config: str, tmp_pathplus: PathPlus):
+def test_load_toml_no_project_table(toml_config: str, tmp_pathplus: PathPlus) -> None:
 	(tmp_pathplus / "pyproject.toml").write_clean(toml_config)
 
 	with pytest.raises(KeyError, match="'project' table not found in .*"):
 		load_toml(tmp_pathplus / "pyproject.toml")
 
 
-def test_load_toml_no_requirements(tmp_pathplus: PathPlus):
+def test_load_toml_no_requirements(tmp_pathplus: PathPlus) -> None:
 	(tmp_pathplus / "pyproject.toml").write_clean(MINIMAL_CONFIG)
 
 	with pytest.raises(

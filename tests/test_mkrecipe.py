@@ -19,7 +19,11 @@ configs_dir = PathPlus(__file__).parent / "configs"
 				"mathematical.pyproject.toml",
 				]
 		)
-def test_make_recipe(tmp_pathplus, pyproject_file, advanced_file_regression: AdvancedFileRegressionFixture):
+def test_make_recipe(
+		tmp_pathplus: PathPlus,
+		pyproject_file: str,
+		advanced_file_regression: AdvancedFileRegressionFixture,
+		) -> None:
 	(tmp_pathplus / "pyproject.toml").write_text((configs_dir / pyproject_file).read_text())
 	(tmp_pathplus / "requirements.txt").write_lines([
 			"click>=7.1.2",
@@ -44,7 +48,11 @@ def test_make_recipe(tmp_pathplus, pyproject_file, advanced_file_regression: Adv
 				"mathematical.pyproject.toml",
 				]
 		)
-def test_MaryBerry_make(tmp_pathplus, pyproject_file, advanced_file_regression: AdvancedFileRegressionFixture):
+def test_MaryBerry_make(
+		tmp_pathplus: PathPlus,
+		pyproject_file: str,
+		advanced_file_regression: AdvancedFileRegressionFixture,
+		) -> None:
 	(tmp_pathplus / "pyproject.toml").write_text((configs_dir / pyproject_file).read_text())
 	(tmp_pathplus / "requirements.txt").write_lines([
 			"click>=7.1.2",
@@ -71,8 +79,10 @@ def test_MaryBerry_make(tmp_pathplus, pyproject_file, advanced_file_regression: 
 				]
 		)
 def test_MaryBerry_make_for_wheel(
-		tmp_pathplus, pyproject_file, advanced_file_regression: AdvancedFileRegressionFixture
-		):
+		tmp_pathplus: PathPlus,
+		pyproject_file: str,
+		advanced_file_regression: AdvancedFileRegressionFixture,
+		) -> None:
 	(tmp_pathplus / "pyproject.toml").write_text((configs_dir / pyproject_file).read_text())
 	(tmp_pathplus / "requirements.txt").write_lines([
 			"click>=7.1.2",
