@@ -18,7 +18,7 @@ requirements:
     - coincidence>=0.1.0
     - colorama>=0.4.3
     - deprecation-alias>=0.1.1
-    - domdf_python_tools>=2.5.1
+    - domdf-python-tools>=2.5.1
     - mistletoe>=0.7.2
     - pytest>=6.0.0
     - pytest-regressions>=2.0.2
@@ -31,7 +31,7 @@ requirements:
     - coincidence>=0.1.0
     - colorama>=0.4.3
     - deprecation-alias>=0.1.1
-    - domdf_python_tools>=2.5.1
+    - domdf-python-tools>=2.5.1
     - mistletoe>=0.7.2
     - pytest>=6.0.0
     - pytest-regressions>=2.0.2
