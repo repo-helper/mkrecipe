@@ -32,6 +32,7 @@ def test_make_recipe(
 			"domdf-python-tools>=2.5.1",
 			"mistletoe>=0.7.2",
 			"typing-extensions>=3.7.4.3",
+			'cryptography==3.3.2; platform_python_implementation != "CPython"',
 			])
 
 	make_recipe(tmp_pathplus, tmp_pathplus / "recipe.yaml")
@@ -46,6 +47,7 @@ def test_make_recipe(
 				"flake8-encodings.pyproject.toml",
 				"importcheck.pyproject.toml",
 				"mathematical.pyproject.toml",
+				"github3-utils.pyproject.toml",
 				]
 		)
 def test_MaryBerry_make(
@@ -61,6 +63,7 @@ def test_MaryBerry_make(
 			"domdf-python-tools>=2.5.1",
 			"mistletoe>=0.7.2",
 			"typing-extensions>=3.7.4.3",
+			'cryptography==3.3.2; platform_system != "Linux" and platform_python_implementation != "CPython"'
 			])
 
 	recipe = MaryBerry(tmp_pathplus).make()

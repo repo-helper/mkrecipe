@@ -1,0 +1,61 @@
+package:
+  name: "github3-utils"
+  version: "0.6.0"
+
+source:
+  url: "https://files.pythonhosted.org/packages/7f/1b/275c26dea15616aed01c97aca443c626b926ed212879c04c1d9d9c68689c/github3_utils-0.6.0.tar.gz"
+
+build:
+  noarch: python
+  script: "{{ PYTHON }} -m pip install . -vv  --no-build-isolation --no-deps"
+
+requirements:
+  build:
+    - python
+    - setuptools
+    - wheel
+    - whey
+  host:
+    - pip
+    - python>=3.6
+    - betamax>=0.8.1
+    - click>=7.1.2
+    - colorama>=0.4.3
+    - deprecation-alias>=0.1.1
+    - domdf-python-tools>=2.5.1
+    - mistletoe>=0.7.2
+    - pytest>=6.0.0
+    - setuptools
+    - typing-extensions>=3.7.4.3
+    - wheel
+    - whey
+  run:
+    - python>=3.6
+    - betamax>=0.8.1
+    - click>=7.1.2
+    - colorama>=0.4.3
+    - deprecation-alias>=0.1.1
+    - domdf-python-tools>=2.5.1
+    - mistletoe>=0.7.2
+    - pytest>=6.0.0
+    - typing-extensions>=3.7.4.3
+
+test:
+  imports:
+    - github3_utils
+
+about:
+  license: "MIT License"
+  summary: "Handy utilities for github3.py"
+  description: "Handy utilities for github3.py
+
+
+Before installing please ensure you have added the following channels: conda-forge, domdfcoding
+"
+  home: 'https://github.com/domdfcoding/github3-utils'
+  dev_url: 'https://github.com/domdfcoding/github3-utils'
+  doc_url: 'https://github3-utils.readthedocs.io/en/latest'
+
+extra:
+  maintainers:
+    - 'Dominic Davis-Foster'
