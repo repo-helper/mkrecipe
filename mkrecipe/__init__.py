@@ -233,8 +233,21 @@ class MaryBerry:
 
 		# TODO: handle extras from the dependencies. Lookup the requirements in the wheel metadata.
 		#  Perhaps wait until exposed in PyPI API
-		all_requirements = prepare_requirements(chain(self.config["dependencies"], extra_requirements))
-		all_requirements = validate_requirements(all_requirements, self.config["conda-channels"])
+		all_requirements: List[ComparableRequirement] = []
+		for req in chain(self.config["dependencies"], extra_requirements):
+			if req.marker is not None:
+				marker = str(req.marker).lower()
+				if 'platform_system != "linux"' in marker:
+					continue
+				elif 'platform_python_implementation != "cpython"' in marker:
+					continue
+
+			all_requirements.append(req)
+
+		all_requirements = validate_requirements(
+				prepare_requirements(all_requirements),
+				self.config["conda-channels"],
+				)
 
 		requirements_entries = [req for req in all_requirements if req and req != "numpy"]
 
