@@ -6,5 +6,6 @@ jinja2>=2.11.3
 packaging>=20.9
 pyproject-parser>=0.2.0
 shippinglabel>=0.15.0
+shippinglabel-conda>=0.1.0
 typing-extensions>=3.7.4.3
 whey>=0.0.12

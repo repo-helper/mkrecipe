@@ -46,9 +46,9 @@ from domdf_python_tools.typing import PathLike
 from jinja2 import BaseLoader, Environment, StrictUndefined
 from packaging.requirements import InvalidRequirement
 from packaging.version import Version
-from shippinglabel.conda import make_conda_description, prepare_requirements, validate_requirements
 from shippinglabel.pypi import get_sdist_url, get_wheel_url
 from shippinglabel.requirements import ComparableRequirement, combine_requirements
+from shippinglabel_conda import make_conda_description, prepare_requirements, validate_requirements
 from whey.config.whey import license_lookup
 
 # this package
