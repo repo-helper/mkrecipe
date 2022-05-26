@@ -1,3 +1,6 @@
+# stdlib
+from textwrap import dedent
+
 # 3rd party
 import click
 import pytest
@@ -187,7 +190,13 @@ class TestHandleTracebacks:
 
 			result = runner.invoke(main)
 			assert result.exit_code == 1
-			assert result.stdout == "KeyError: \"'project' table not found in 'pyproject.toml'\"\nAborted!\n"
+			assert result.stdout == dedent(
+					"""\
+			KeyError: \"'project' table not found in 'pyproject.toml'\"
+			    Use '--traceback' to view the full traceback.
+			Aborted!
+			"""
+					)
 
 	def test_no_requirements(self, tmp_pathplus: PathPlus) -> None:
 		runner = CliRunner()
@@ -209,4 +218,10 @@ class TestHandleTracebacks:
 
 			result = runner.invoke(main)
 			assert result.exit_code == 1
-			assert result.stdout == f"BadConfigError: {error_message}\n" "Aborted!\n"
+			assert result.stdout == dedent(
+					f"""\
+			BadConfigError: {error_message}
+			    Use '--traceback' to view the full traceback.
+			Aborted!
+			"""
+					)

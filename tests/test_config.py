@@ -8,6 +8,7 @@ import pytest
 from coincidence.regressions import AdvancedDataRegressionFixture
 from dom_toml.parser import BadConfigError
 from domdf_python_tools.paths import PathPlus, in_directory
+from packaging.version import InvalidVersion
 
 # this package
 from mkrecipe.config import BuildSystemParser, MkrecipeParser, PEP621Parser, load_toml
@@ -119,7 +120,7 @@ def test_pep621_class_valid_config(
 						),
 				pytest.param(
 						'[project]\nname = "spam"\nversion = "???????12345=============☃"\ndynamic = ["dependencies"]',
-						BadConfigError,
+						InvalidVersion,
 						re.escape("Invalid version: '???????12345=============☃'"),
 						id="bad_version"
 						),
