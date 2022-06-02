@@ -197,7 +197,7 @@ class MkrecipeParser(AbstractConfigParser):
 
 		extras = config["extras"]
 
-		path_elements = [*self.table_name, "extras"]
+		path_elements = (*self.table_name, "extras")
 
 		if isinstance(extras, str):
 			extras_lower = extras.lower()

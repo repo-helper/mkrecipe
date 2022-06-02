@@ -126,7 +126,7 @@ def test_mkrecipe_wheel(
 _click_major_ver = click.__version__.split('.')[0]
 
 
-def _param(label: str, expr: bool):
+def _param(label: str, expr: bool):  # noqa: MAN002
 	return pytest.param(label, marks=pytest.mark.skipif(expr, reason="Output differs with click 8"))
 
 
