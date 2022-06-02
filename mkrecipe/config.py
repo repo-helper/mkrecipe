@@ -47,7 +47,7 @@ from pyproject_parser.type_hints import ProjectDict
 from shippinglabel.requirements import ComparableRequirement, combine_requirements, read_requirements
 from typing_extensions import Literal
 
-__all__ = ["MkrecipeParser", "PEP621Parser", "load_toml"]
+__all__ = ("MkrecipeParser", "PEP621Parser", "load_toml")
 
 
 class PEP621Parser(whey.config.PEP621Parser):

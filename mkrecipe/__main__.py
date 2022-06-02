@@ -44,7 +44,7 @@ if TYPE_CHECKING:
 	from domdf_python_tools.typing import PathLike
 	from typing_extensions import Literal
 
-__all__ = ["main"]
+__all__ = ("main", )
 
 
 @click.version_option(__version__)

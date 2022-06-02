@@ -60,7 +60,7 @@ __license__: str = "MIT License"
 __version__: str = "0.4.4"
 __email__: str = "dominic@davis-foster.co.uk"
 
-__all__ = ["MaryBerry", "make_recipe"]
+__all__ = ("MaryBerry", "make_recipe")
 
 RETRIES = int(os.environ.get("MKRECIPE_HTTP_RETRIES", 3)) + 1
 RETRY_DELAY = int(os.environ.get("MKRECIPE_RETRY_DELAY", 10))
