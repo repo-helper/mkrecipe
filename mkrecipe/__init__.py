@@ -291,10 +291,14 @@ class MaryBerry:
 				yield f"home: {str(url)!r}"
 			# elif re.match("issue[s\s_-]*(tracker)?", label, flags=re.IGNORECASE):
 			# 	yield f"home: {str(url)!r}"
-			elif re.match(r"source[\s_-]*(code)?", label, flags=re.IGNORECASE):
+			elif _source_code_re.match(label):  # pylint: disable=W8202
 				yield f"dev_url: {str(url)!r}"
-			elif re.match("doc(s|umentation)?", label, flags=re.IGNORECASE):
+			elif _documentation_re.match(label):  # pylint: disable=W8202
 				yield f"doc_url: {str(url)!r}"
+
+
+_source_code_re = re.compile(r"source[\s_-]*(code)?", flags=re.IGNORECASE)
+_documentation_re = re.compile(r"source[\s_-]*(code)?", flags=re.IGNORECASE)
 
 
 def make_recipe(project_dir: PathLike, recipe_file: PathLike) -> None:
