@@ -50,6 +50,7 @@ known_third_party = [
     "pytest_randomly",
     "pytest_timeout",
     "shippinglabel",
+    "shippinglabel_conda",
     "typing_extensions",
     "whey",
 ]
