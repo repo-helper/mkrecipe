@@ -27,8 +27,7 @@ rst_prolog = f""".. |pkgname| replace:: mkrecipe
 slug = re.sub(r'\W+', '-', project.lower())
 release = version = config.version
 
-sphinx_builder = os.environ.get("SPHINX_BUILDER", "html").lower()
-todo_include_todos = int(os.environ.get("SHOW_TODOS", 0)) and sphinx_builder != "latex"
+todo_include_todos = bool(os.environ.get("SHOW_TODOS", 0))
 
 intersphinx_mapping = {
 		"python": ("https://docs.python.org/3/", None),
