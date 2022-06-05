@@ -298,7 +298,7 @@ class MaryBerry:
 
 
 _source_code_re = re.compile(r"source[\s_-]*(code)?", flags=re.IGNORECASE)
-_documentation_re = re.compile(r"source[\s_-]*(code)?", flags=re.IGNORECASE)
+_documentation_re = re.compile(r"doc(s|umentation)?", flags=re.IGNORECASE)
 
 
 def make_recipe(project_dir: PathLike, recipe_file: PathLike) -> None:
