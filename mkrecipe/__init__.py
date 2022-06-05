@@ -5,9 +5,6 @@
 A tool to create recipes for building conda packages from distributions on PyPI.
 
 .. autosummary-widths:: 7/16
-	:html: 4/10
-
-.. latex:vspace:: -5px
 """
 #
 #  Copyright © 2020-2021 Dominic Davis-Foster <dominic@davis-foster.co.uk>
@@ -74,9 +71,6 @@ class MaryBerry:
 	:param project_dir: The project directory.
 
 	.. autosummary-widths:: 6/16
-		:html: 7/20
-
-	.. latex:vspace:: -5px
 	"""
 
 	def __init__(self, project_dir: PathLike) -> None:
@@ -217,6 +211,10 @@ class MaryBerry:
 	def get_runtime_requirements(self) -> List[ComparableRequirement]:
 		"""
 		Returns a list of the project's runtime requirements.
+
+		:rtype:
+
+		.. latex:clearpage::
 		"""
 
 		extras: List[Union[str, ComparableRequirement]] = []

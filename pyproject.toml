@@ -76,9 +76,9 @@ extensions = [
     "html_section",
     "sphinx_click",
     "configconfig.autoconfig",
-    "sphinx_toolbox_experimental.autosummary_widths",
-    "sphinx_toolbox_experimental.peps",
-    "sphinx_toolbox_experimental.toml",
+    "sphinx_toolbox.more_autosummary.column_widths",
+    "sphinx_packaging.peps",
+    "sphinx_packaging.toml",
 ]
 sphinxemoji_style = "twemoji"
 gitstamp_fmt = "%d %b %Y"
