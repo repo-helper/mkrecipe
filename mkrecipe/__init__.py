@@ -31,12 +31,12 @@ A tool to create recipes for building conda packages from distributions on PyPI.
 # stdlib
 import os
 import re
-import time
 from itertools import chain
+from time import sleep
 from typing import Any, Callable, Dict, Iterable, List, Union
 
 # 3rd party
-import click
+from click import echo
 from domdf_python_tools.compat import importlib_resources
 from domdf_python_tools.paths import PathPlus
 from domdf_python_tools.typing import PathLike
@@ -198,13 +198,15 @@ class MaryBerry:
 		return wheel_url
 
 	def _try_again(self, func: Callable[[str, Union[str, int, Version]], str]) -> str:
-		for retry in range(0, RETRIES):
-			try:
-				url = func(self.config["name"], self.config["version"])
+		name, version = self.config["name"], self.config["version"]
+
+		for retry in range(0, RETRIES):  # pylint: disable=W8202
+			try:  # pylint: disable=R8203
+				url = func(name, version)
 				return url
-			except InvalidRequirement as e:  # pragma: no cover
-				click.echo(f"{e} Trying again in 10s", err=True)
-				time.sleep(RETRY_DELAY)
+			except InvalidRequirement as e:  # pragma: no cover  # pylint: disable=W8201
+				echo(f"{e} Trying again in 10s", err=True)  # click.echo  # pylint: disable=W8201
+				sleep(RETRY_DELAY)  # time.sleep  # pylint: disable=W8202
 
 		raise InvalidRequirement(f"Cannot find {self.config['name']} version {self.config['version']} on PyPI.")
 
@@ -232,7 +234,7 @@ class MaryBerry:
 		# TODO: handle extras from the dependencies. Lookup the requirements in the wheel metadata.
 		#  Perhaps wait until exposed in PyPI API
 		all_requirements: List[ComparableRequirement] = []
-		for req in chain(self.config["dependencies"], extra_requirements):
+		for req in chain(self.config["dependencies"], extra_requirements):  # pylint: disable=W8201
 			if req.marker is not None:
 				marker = str(req.marker).lower()
 				if 'platform_system != "linux"' in marker:
