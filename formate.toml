@@ -51,6 +51,7 @@ known_third_party = [
     "pytest_timeout",
     "shippinglabel",
     "shippinglabel_conda",
+    "shippinglabel_pypi",
     "typing_extensions",
     "whey",
 ]
