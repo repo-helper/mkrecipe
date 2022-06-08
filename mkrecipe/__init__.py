@@ -43,9 +43,9 @@ from domdf_python_tools.typing import PathLike
 from jinja2 import BaseLoader, Environment, StrictUndefined
 from packaging.requirements import InvalidRequirement
 from packaging.version import Version
-from shippinglabel_pypi import get_sdist_url, get_wheel_url
 from shippinglabel.requirements import ComparableRequirement, combine_requirements
 from shippinglabel_conda import make_conda_description, prepare_requirements, validate_requirements
+from shippinglabel_pypi import get_sdist_url, get_wheel_url
 from whey.config.whey import license_lookup
 
 # this package
@@ -54,7 +54,7 @@ from mkrecipe.config import load_toml
 __author__: str = "Dominic Davis-Foster"
 __copyright__: str = "2020-2021 Dominic Davis-Foster"
 __license__: str = "MIT License"
-__version__: str = "0.5.0"
+__version__: str = "0.6.0"
 __email__: str = "dominic@davis-foster.co.uk"
 
 __all__ = ("MaryBerry", "make_recipe")
