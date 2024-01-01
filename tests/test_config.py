@@ -67,7 +67,8 @@ def test_pep621_class_valid_config(
 		config["dependencies"] = list(map(str, config["dependencies"]))  # type: ignore[arg-type]
 	if "optional-dependencies" in config:
 		config["optional-dependencies"] = {
-				k: list(map(str, v))  # type: ignore[arg-type]
+				k:
+						list(map(str, v))  # type: ignore[arg-type]
 				for k, v in config["optional-dependencies"].items()
 				}
 
