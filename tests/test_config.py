@@ -66,10 +66,10 @@ def test_pep621_class_valid_config(
 	if "dependencies" in config:
 		config["dependencies"] = list(map(str, config["dependencies"]))  # type: ignore[arg-type]
 	if "optional-dependencies" in config:
-		config["optional-dependencies"] = {
-				k: list(map(str, v))  # type: ignore[arg-type]
-				for k, v in config["optional-dependencies"].items()
-				}
+		optional_dependencies = {}
+		for k, v in config["optional-dependencies"].items():
+			optional_dependencies[k] = list(map(str, v))
+		config["optional-dependencies"] = optional_dependencies  # type: ignore[typeddict-item]
 
 	if "requires-python" in config and config["requires-python"] is not None:
 		config["requires-python"] = str(config["requires-python"])  # type: ignore[typeddict-item]
