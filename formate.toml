@@ -55,4 +55,4 @@ known_third_party = [
     "typing_extensions",
     "whey",
 ]
-known_first_party = "mkrecipe"
+known_first_party = [ "mkrecipe",]
