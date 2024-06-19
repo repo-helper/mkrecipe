@@ -11,7 +11,7 @@ version: '0.6.0.post1'
 license: 'MIT'
 short_desc: 'A tool to create recipes for building conda packages from distributions on PyPI.'
 
-python_deploy_version: 3.6
+python_deploy_version: 3.8
 use_whey: True
 docs_fail_on_warning: true
 sphinx_html_theme: furo
