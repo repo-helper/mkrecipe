@@ -40,6 +40,7 @@ from domdf_python_tools.iterative import natmin
 from domdf_python_tools.paths import PathPlus, in_directory
 from domdf_python_tools.typing import PathLike
 from packaging.specifiers import Specifier
+from packaging.version import Version
 from pyproject_parser.parsers import BuildSystemParser, name_re
 from pyproject_parser.type_hints import ProjectDict
 from shippinglabel.requirements import ComparableRequirement, combine_requirements, read_requirements
@@ -140,7 +141,12 @@ class MkrecipeParser(AbstractConfigParser):
 	table_name = ("tool", "mkrecipe")
 
 	# Don't add any options shared with tool.whey
-	defaults = {"extras": "none", "conda-channels": ("conda-forge", )}
+	defaults = {
+			"extras": "none",
+			"conda-channels": ("conda-forge", ),
+			"min-python-version": None,
+			"max-python-version": None
+			}
 
 	def parse_package(self, config: Dict[str, TOML_TYPES]) -> str:
 		"""
@@ -219,6 +225,32 @@ class MkrecipeParser(AbstractConfigParser):
 
 		return extras
 
+	def parse_min_python_version(self, config: Dict[str, TOML_TYPES]) -> int:
+		"""
+		Parse the ``min-python-version`` key, giving the minimum Python 3.x version to consider requirements for.
+
+		:param config: The unparsed TOML config for the ``[tool.mkrecipe]`` table.
+
+		:rtype:
+
+		.. versionadded:: 0.7.0
+		"""
+
+		v = Version(str(config["min-python-version"]))
+		assert v.major == 3
+		return v.minor
+
+	def parse_max_python_version(self, config: Dict[str, TOML_TYPES]) -> int:
+		"""
+		Parse the ``max-python-version`` key, giving the maximum Python 3.x version to consider requirements for.
+
+		:param config: The unparsed TOML config for the ``[tool.mkrecipe]`` table.
+		"""
+
+		v = Version(str(config["max-python-version"]))
+		assert v.major == 3
+		return v.minor
+
 	@property
 	def keys(self) -> List[str]:
 		"""
@@ -230,6 +262,8 @@ class MkrecipeParser(AbstractConfigParser):
 				"license-key",
 				"conda-channels",
 				"extras",
+				"min-python-version",
+				"max-python-version",
 				]
 
 

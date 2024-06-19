@@ -111,6 +111,33 @@ under :pep621:`project.requirements <requirements>`.
 		[tool.mkrecipe]
 		extras = "all"
 
+.. conf:: min-python-version
+
+	**Type**: :toml:`String` or :toml:`Float`.
+
+	The minimum Python 3.x version to consider requirements for.
+
+	:bold-title:`Examples:`
+
+	.. code-block:: toml
+
+		[tool.mkrecipe]
+		min-python-version = 3.6
+
+.. conf:: max-python-version
+
+	**Type**: :toml:`String` or :toml:`Float`.
+
+	The maximum Python 3.x version to consider requirements for.
+
+	:bold-title:`Examples:`
+
+	.. code-block:: toml
+
+		[tool.mkrecipe]
+		max-python-version = 3.12
+
+
 -----
 
 :conf:`package` and :conf:`license-key` can also be read from the ``[tool.whey]`` table if you use

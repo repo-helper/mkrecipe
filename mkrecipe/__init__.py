@@ -210,6 +210,43 @@ class MaryBerry:
 
 		raise InvalidRequirement(f"Cannot find {self.config['name']} version {self.config['version']} on PyPI.")
 
+	def _filter_reqs_by_py_version(self, reqs: List[ComparableRequirement]) -> List[ComparableRequirement]:
+		# Allow user to specify (partial) range of Python versions to include requirements for.
+		# E.g. to skip Python 3.6-only requirements or requirements for prerelease Pythons.
+
+		max_version = self.config["max-python-version"]
+		min_version = self.config["min-python-version"]
+
+		if max_version is None and min_version is None:
+			return reqs
+
+		if min_version is None:
+			version_range = range(max_version + 1)
+		elif max_version is None:
+			version_range = range(min_version, 21)  # fix after Python 3.20
+		else:
+			version_range = range(min_version, max_version + 1)
+
+		filtered_reqs = []
+
+		for requirement in reqs:
+
+			if not requirement.marker:
+				filtered_reqs.append(requirement)
+				continue
+
+			# Iterate through minor python3 versions.
+			# If it's valid for any of the range then include it
+			for minor_version in version_range:
+				if requirement.marker.evaluate({
+						"python_full_version": f"3.{minor_version}",
+						"python_version": f"3.{minor_version}",
+						}):
+					filtered_reqs.append(requirement)
+					break
+
+		return filtered_reqs
+
 	def get_runtime_requirements(self) -> List[ComparableRequirement]:
 		"""
 		Returns a list of the project's runtime requirements.
@@ -243,6 +280,8 @@ class MaryBerry:
 					continue
 
 			all_requirements.append(req)
+
+		all_requirements = self._filter_reqs_by_py_version(all_requirements)
 
 		all_requirements = validate_requirements(
 				prepare_requirements(all_requirements),
