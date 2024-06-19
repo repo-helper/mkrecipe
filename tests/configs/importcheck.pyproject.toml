@@ -36,3 +36,4 @@ license-key = "MIT"
 
 [tool.mkrecipe]
 conda-channels = ["domdfcoding", "conda-forge"]
+min-python-version = 3.6

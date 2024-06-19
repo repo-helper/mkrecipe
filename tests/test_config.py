@@ -187,6 +187,10 @@ def test_buildsystem_parser_valid_config(
 				pytest.param('[tool.mkrecipe]\nextras = "all"', id="extras_all"),
 				pytest.param('[tool.mkrecipe]\nextras = "none"', id="extras_none"),
 				pytest.param(
+						'[tool.mkrecipe]\nmin-python-version = 3.6\nmax-python-version = 3.12',
+						id="extras_none",
+						),
+				pytest.param(
 						'[tool.mkrecipe]\nconda-channels = ["domdfcoding", "conda-forge"]', id="conda_channels"
 						),
 				]

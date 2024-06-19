@@ -41,3 +41,4 @@ package = "flake8_encodings"
 [tool.mkrecipe]
 conda-channels = [ "conda-forge", "domdfcoding",]
 extras = "all"
+max-python-version = 3.18

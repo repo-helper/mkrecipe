@@ -57,3 +57,5 @@ package = "sphinx_toolbox"
 [tool.mkrecipe]
 conda-channels = [ "domdfcoding", "conda-forge",]
 extras = "all"
+min-python-version = 3.6
+max-python-version = 3.18
