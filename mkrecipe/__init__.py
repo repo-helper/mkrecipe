@@ -57,7 +57,7 @@ __license__: str = "MIT License"
 __version__: str = "0.8.0"
 __email__: str = "dominic@davis-foster.co.uk"
 
-__all__ = ("MaryBerry", "make_recipe")
+__all__ = ("MaryBerry", "make_recipe", "filter_reqs_with_markers", "filter_reqs_by_py_version")
 
 RETRIES = int(os.environ.get("MKRECIPE_HTTP_RETRIES", 3)) + 1
 RETRY_DELAY = int(os.environ.get("MKRECIPE_RETRY_DELAY", 10))
@@ -133,6 +133,8 @@ class MaryBerry:
 		.. versionadded:: 0.3.0
 
 		:returns: The ``meta.yaml`` recipe as a string.
+
+		.. latex:clearpage::
 		"""
 
 		# find the download URL
@@ -210,50 +212,9 @@ class MaryBerry:
 
 		raise InvalidRequirement(f"Cannot find {self.config['name']} version {self.config['version']} on PyPI.")
 
-	def _filter_reqs_by_py_version(self, reqs: List[ComparableRequirement]) -> List[ComparableRequirement]:
-		# Allow user to specify (partial) range of Python versions to include requirements for.
-		# E.g. to skip Python 3.6-only requirements or requirements for prerelease Pythons.
-
-		max_version = self.config["max-python-version"]
-		min_version = self.config["min-python-version"]
-
-		if max_version is None and min_version is None:
-			return reqs
-
-		if min_version is None:
-			version_range = range(max_version + 1)
-		elif max_version is None:
-			version_range = range(min_version, 21)  # fix after Python 3.20
-		else:
-			version_range = range(min_version, max_version + 1)
-
-		filtered_reqs = []
-
-		for requirement in reqs:
-
-			if not requirement.marker:
-				filtered_reqs.append(requirement)
-				continue
-
-			# Iterate through minor python3 versions.
-			# If it's valid for any of the range then include it
-			for minor_version in version_range:
-				if requirement.marker.evaluate({
-						"python_full_version": f"3.{minor_version}",
-						"python_version": f"3.{minor_version}",
-						}):
-					filtered_reqs.append(requirement)
-					break
-
-		return filtered_reqs
-
 	def get_runtime_requirements(self) -> List[ComparableRequirement]:
 		"""
 		Returns a list of the project's runtime requirements.
-
-		:rtype:
-
-		.. latex:clearpage::
 		"""
 
 		extras: List[Union[str, ComparableRequirement]] = []
@@ -270,23 +231,10 @@ class MaryBerry:
 
 		# TODO: handle extras from the dependencies. Lookup the requirements in the wheel metadata.
 		#  Perhaps wait until exposed in PyPI API
-		all_requirements: List[ComparableRequirement] = []
-		for req in chain(self.config["dependencies"], extra_requirements):  # pylint: disable=W8201
-			if req.marker is not None:
-				marker = str(req.marker).lower()
-				reject_markers = [
-						'platform_system != "linux"',
-						"python_version == ",
-						'platform_system == "windows"',
-						'platform_python_implementation != "cpython"',
-						'platform_machine == "aarch64"',
-						]
-				if any(rm in marker for rm in reject_markers):
-					continue
-
-			all_requirements.append(req)
-
-		all_requirements = self._filter_reqs_by_py_version(all_requirements)
+		all_requirements: List[ComparableRequirement] = list(
+				filter_reqs_with_markers(self.config, chain(self.config["dependencies"], extra_requirements))
+				)
+		all_requirements = filter_reqs_by_py_version(self.config, all_requirements)
 
 		all_requirements = validate_requirements(
 				prepare_requirements(all_requirements),
@@ -303,6 +251,10 @@ class MaryBerry:
 	def get_maintainers(self) -> Iterable[str]:
 		"""
 		Returns an iterable over the names of the project's maintainers.
+
+		:rtype:
+
+		.. latex:clearpage::
 		"""
 
 		all_maintainers = set()
@@ -356,3 +308,83 @@ def make_recipe(project_dir: PathLike, recipe_file: PathLike) -> None:
 	recipe_file = PathPlus(recipe_file)
 	recipe_file.parent.maybe_make(parents=True)
 	recipe_file.write_clean(MaryBerry(project_dir).make())
+
+
+def filter_reqs_with_markers(
+		config: Dict[str, Any],
+		reqs: Iterable[ComparableRequirement],
+		) -> Iterable[ComparableRequirement]:
+	"""
+	Remove Windows, pypy, aarch64 etc. specific requirements.
+
+	:param config:
+	:param reqs:
+
+	:returns: An iterable of remaining requirements.
+
+	.. versionadded:: 0.9.0
+	"""
+
+	for req in chain(config["dependencies"], reqs):  # pylint: disable=W8201
+		if req.marker is not None:
+			marker = str(req.marker).lower()
+			reject_markers = [
+					'platform_system != "linux"',
+					'platform_system == "windows"',
+					'platform_python_implementation != "cpython"',
+					'platform_machine == "aarch64"',
+					]
+			if any(rm in marker for rm in reject_markers):
+				continue
+
+		yield req
+
+
+def filter_reqs_by_py_version(
+		config: Dict[str, Any],
+		reqs: List[ComparableRequirement],
+		) -> List[ComparableRequirement]:
+	"""
+	Exclude requirements based on a used-specified (partial) range of Python versions.
+	E.g. to skip Python 3.6-only requirements or requirements for prerelease Pythons.
+
+	:param config:
+	:param reqs:
+
+	:returns: The remaining requirements.
+
+	.. versionadded:: 0.9.0
+	"""
+
+	max_version = config["max-python-version"]
+	min_version = config["min-python-version"]
+
+	if max_version is None and min_version is None:
+		return reqs
+
+	if min_version is None:
+		version_range = range(max_version + 1)
+	elif max_version is None:
+		version_range = range(min_version, 21)  # fix after Python 3.20
+	else:
+		version_range = range(min_version, max_version + 1)
+
+	filtered_reqs = []
+
+	for requirement in reqs:
+
+		if not requirement.marker:
+			filtered_reqs.append(requirement)
+			continue
+
+		# Iterate through minor python3 versions.
+		# If it's valid for any of the range then include it
+		for minor_version in version_range:
+			if requirement.marker.evaluate({
+					"python_full_version": f"3.{minor_version}",
+					"python_version": f"3.{minor_version}",
+					}):
+				filtered_reqs.append(requirement)
+				break
+
+	return filtered_reqs

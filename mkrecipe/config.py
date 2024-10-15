@@ -107,10 +107,6 @@ class PEP621Parser(whey.config.PEP621Parser):
 			:attr:`dom_toml.parser.AbstractConfigParser.defaults` and
 			:attr:`dom_toml.parser.AbstractConfigParser.factories`
 			will be set as defaults for the returned mapping.
-
-		:rtype:
-
-		.. latex:clearpage::
 		"""
 
 		dynamic_fields = config.get("dynamic", [])
@@ -155,6 +151,10 @@ class MkrecipeParser(AbstractConfigParser):
 		This defaults to `project.name <https://www.python.org/dev/peps/pep-0621/#name>`_ if unspecified.
 
 		:param config: The unparsed TOML config for the ``[tool.mkrecipe]`` table.
+
+		:rtype:
+
+		.. latex:clearpage::
 		"""
 
 		package = config["package"]
