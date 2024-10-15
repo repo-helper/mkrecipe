@@ -1,10 +1,10 @@
 click>=7.1.2
 consolekit>=1.2.0
-dom-toml>=0.4.0
+dom-toml>=2.0.0
 domdf-python-tools>=2.8.0
 jinja2>=2.11.3
 packaging>=20.9
-pyproject-parser>=0.2.0
+pyproject-parser>=0.11.0
 shippinglabel>=0.15.0
 shippinglabel-conda>=0.1.0
 shippinglabel-pypi>=0.1.0
