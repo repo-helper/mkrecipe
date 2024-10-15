@@ -274,9 +274,14 @@ class MaryBerry:
 		for req in chain(self.config["dependencies"], extra_requirements):  # pylint: disable=W8201
 			if req.marker is not None:
 				marker = str(req.marker).lower()
-				if 'platform_system != "linux"' in marker:
-					continue
-				elif 'platform_python_implementation != "cpython"' in marker:
+				reject_markers = [
+						'platform_system != "linux"',
+						"python_version == ",
+						'platform_system == "windows"',
+						'platform_python_implementation != "cpython"',
+						'platform_machine == "aarch64"',
+						]
+				if any(rm in marker for rm in reject_markers):
 					continue
 
 			all_requirements.append(req)
