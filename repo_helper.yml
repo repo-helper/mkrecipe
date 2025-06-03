@@ -92,6 +92,3 @@ third_party_version_matrix:
   - 8.0
   - 8.1
   - 8.2
-
-tox_unmanaged:
- - flake8
