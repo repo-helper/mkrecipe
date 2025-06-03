@@ -2,10 +2,9 @@
 from textwrap import dedent
 
 # 3rd party
-import click
 import pytest
 from coincidence.regressions import AdvancedFileRegressionFixture
-from consolekit.testing import CliRunner, Result
+from consolekit.testing import CliRunner, Result, _click_version
 from dom_toml.parser import BadConfigError
 from domdf_python_tools.paths import PathPlus, in_directory
 
@@ -123,7 +122,7 @@ def test_mkrecipe_wheel(
 	advanced_file_regression.check_file(tmp_pathplus / "conda" / "meta.yaml")
 
 
-_click_major_ver = click.__version__.split('.')[0]
+_click_major_ver = _click_version[0]
 
 
 def _param(label: str, expr: bool):  # noqa: MAN002
@@ -140,7 +139,19 @@ def _param(label: str, expr: bool):  # noqa: MAN002
 				"mathematical.pyproject.toml",
 				]
 		)
-@pytest.mark.parametrize("click_ver", [_param('8', _click_major_ver == '7'), _param('7', _click_major_ver != '7')])
+@pytest.mark.parametrize(
+		"click_ver",
+		[
+				pytest.param(
+						'7',
+						marks=pytest.mark.skipif(_click_version[0] == 8, reason="Output differs on click 8"),
+						),
+				pytest.param(
+						'8',
+						marks=pytest.mark.skipif(_click_version[0] != 8, reason="Output differs on click 8"),
+						),
+				]
+		)
 def test_mkrecipe_bad_type(
 		tmp_pathplus: PathPlus,
 		pyproject_file: str,
