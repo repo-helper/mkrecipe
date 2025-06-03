@@ -194,15 +194,19 @@ class MkrecipeParser(AbstractConfigParser):
 
 		return channels
 
-	def parse_extras(self, config: Dict[str, TOML_TYPES]) -> Union[Literal["all"], Literal["none"], List[str]]:
+	def parse_extras(
+			self,
+			config: Dict[str, TOML_TYPES],
+			) -> Union[Literal["all"], Literal["none"], List[str]]:
 		"""
-		Parse the ``extras`` key, giving a list of extras to include as requirements in the conda package.
+		Parse the ``conda-extras`` key, giving a list of extras (see :pep621:`optional-dependencies`)
+		to include as requirements in the Conda package.
 
 		* The special keyword ``'all'`` indicates all extras should be included.
 		* The special keyword ``'none'`` indicates no extras should be included.
 
 		:param config: The unparsed TOML config for the ``[tool.mkrecipe]`` table.
-		"""
+		"""  # noqa: D400
 
 		extras = config["extras"]
 
