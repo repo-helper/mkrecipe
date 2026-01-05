@@ -177,9 +177,8 @@ class MaryBerry:
 		sdist_url = self._try_again(get_sdist_url)
 
 		if not sdist_url.endswith(".tar.gz"):
-			raise InvalidRequirement(
-					f"Cannot find source distribution for {self.config['name']} version {self.config['version']}."
-					)
+			msg = f"Cannot find source distribution for {self.config['name']} version {self.config['version']}."
+			raise InvalidRequirement(msg)
 
 		return sdist_url
 
@@ -193,9 +192,8 @@ class MaryBerry:
 		wheel_url = self._try_again(get_wheel_url)
 
 		if not wheel_url.endswith(".whl"):
-			raise InvalidRequirement(
-					f"Cannot find wheel for {self.config['name']} version {self.config['version']}."
-					)
+			msg = f"Cannot find wheel for {self.config['name']} version {self.config['version']}."
+			raise InvalidRequirement(msg)
 
 		return wheel_url
 

@@ -37,7 +37,7 @@ from tests.example_configs import (
 				pytest.param(f'{MINIMAL_CONFIG}\nrequires-python = ">=3.8"', id="requires-python"),
 				pytest.param(
 						f'{MINIMAL_CONFIG}\nrequires-python = ">=2.7,!=3.0.*,!=3.2.*"',
-						id="requires-python_complex"
+						id="requires-python_complex",
 						),
 				pytest.param(KEYWORDS, id="keywords"),
 				pytest.param(AUTHORS, id="authors"),
@@ -86,61 +86,61 @@ def test_pep621_class_valid_config(
 						'[project]\nname = "spam"',
 						BadConfigError,
 						"The 'project.version' field must be provided.",
-						id="no_version"
+						id="no_version",
 						),
 				pytest.param(
 						'[project]\nversion = "2020.0.0"',
 						BadConfigError,
 						"The 'project.name' field must be provided.",
-						id="no_name"
+						id="no_name",
 						),
 				pytest.param(
 						'[project]\ndynamic = ["name"]',
 						BadConfigError,
 						"The 'project.name' field may not be dynamic.",
-						id="dynamic_name"
+						id="dynamic_name",
 						),
 				pytest.param(
 						'[project]\nname = "spam"\ndynamic = ["version"]',
 						BadConfigError,
 						"The 'project.version' field may not be dynamic.",
-						id="dynamic_version"
+						id="dynamic_version",
 						),
 				pytest.param(
 						'[project]\nname = "spam"\nversion = "2020.0.0"',
 						BadConfigError,
 						"The 'project.dependencies' field must be provided or marked as 'dynamic'",
-						id="no_dependencies"
+						id="no_dependencies",
 						),
 				pytest.param(
 						'[project]\nname = "???????12345=============☃"\nversion = "2020.0.0"\ndynamic = ["dependencies"]',
 						BadConfigError,
 						"The value for 'project.name' is invalid.",
-						id="bad_name"
+						id="bad_name",
 						),
 				pytest.param(
 						'[project]\nname = "spam"\nversion = "???????12345=============☃"\ndynamic = ["dependencies"]',
 						InvalidVersion,
 						re.escape("Invalid version: '???????12345=============☃'"),
-						id="bad_version"
+						id="bad_version",
 						),
 				pytest.param(
 						f'{MINIMAL_CONFIG}\nauthors = [{{name = "Bob, Alice"}}]',
 						BadConfigError,
 						r"The 'project.authors\[0\].name' key cannot contain commas.",
-						id="author_comma"
+						id="author_comma",
 						),
 				pytest.param(
 						f'{MINIMAL_CONFIG}\nmaintainers = [{{name = "Bob, Alice"}}]',
 						BadConfigError,
 						r"The 'project.maintainers\[0\].name' key cannot contain commas.",
-						id="maintainer_comma"
+						id="maintainer_comma",
 						),
 				pytest.param(
 						f'[project]\nname = "spam"\nversion = "2020.0.0"\ndependencies = [1, 2, 3, 4, 5]',
 						TypeError,
 						r"Invalid type for 'project.dependencies\[0\]': expected <class 'str'>, got <class 'int'>",
-						id="dependencies_wrong_type"
+						id="dependencies_wrong_type",
 						),
 				]
 		)
@@ -191,7 +191,8 @@ def test_buildsystem_parser_valid_config(
 						id="extras_none",
 						),
 				pytest.param(
-						'[tool.mkrecipe]\nconda-channels = ["domdfcoding", "conda-forge"]', id="conda_channels"
+						'[tool.mkrecipe]\nconda-channels = ["domdfcoding", "conda-forge"]',
+						id="conda_channels",
 						),
 				]
 		)

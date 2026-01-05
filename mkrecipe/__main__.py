@@ -66,7 +66,7 @@ __all__ = ("main", )
 		cls=DescribedArgument,
 		)
 @click_command()
-def main(  # noqa: PRM002
+def main(
 		project: "PathLike" = '.',
 		outfile: str = "conda/meta.yaml",
 		artifact_type: "Literal['sdist', 'wheel']" = "sdist",

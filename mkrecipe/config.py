@@ -141,7 +141,7 @@ class MkrecipeParser(AbstractConfigParser):
 			"extras": "none",
 			"conda-channels": ("conda-forge", ),
 			"min-python-version": None,
-			"max-python-version": None
+			"max-python-version": None,
 			}
 
 	def parse_package(self, config: Dict[str, TOML_TYPES]) -> str:
@@ -219,10 +219,8 @@ class MkrecipeParser(AbstractConfigParser):
 			elif extras_lower == "none":
 				return "none"
 			else:
-				raise BadConfigError(
-						f"Invalid value for [{construct_path(path_elements)}]: "
-						"Expected 'all', 'none' or a list of strings."
-						)
+				msg = f"Invalid value for [{construct_path(path_elements)}]: Expected 'all', 'none' or a list of strings."
+				raise BadConfigError(msg)
 
 		for idx, impl in enumerate(extras):
 			self.assert_indexed_type(impl, str, path_elements, idx=idx)
@@ -312,10 +310,8 @@ def load_toml(filename: PathLike) -> Dict[str, Any]:  # TODO: TypedDict
 			dependencies = read_requirements(project_dir / "requirements.txt", include_invalid=True)[0]
 			parsed_config["dependencies"] = sorted(combine_requirements(dependencies))
 		else:
-			raise BadConfigError(
-					"'project.dependencies' was listed as a dynamic field "
-					"but no 'requirements.txt' file was found."
-					)
+			msg = "'project.dependencies' was listed as a dynamic field but no 'requirements.txt' file was found."
+			raise BadConfigError(msg)
 
 	parsed_config["version"] = str(parsed_config["version"])
 	parsed_config["requires"] = sorted(

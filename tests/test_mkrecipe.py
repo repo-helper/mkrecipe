@@ -63,7 +63,7 @@ def test_MaryBerry_make(
 			"domdf-python-tools>=2.5.1",
 			"mistletoe>=0.7.2",
 			"typing-extensions>=3.7.4.3",
-			'cryptography==3.3.2; platform_system != "Linux" and platform_python_implementation != "CPython"'
+			'cryptography==3.3.2; platform_system != "Linux" and platform_python_implementation != "CPython"',
 			])
 
 	recipe = MaryBerry(tmp_pathplus).make()
