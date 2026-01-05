@@ -34,7 +34,7 @@ classifiers = [
 ]
 """
 
-DEPENDENCIES = f"""\
+DEPENDENCIES = """\
 [project]
 name = "spam"
 version = "2020.0.0"

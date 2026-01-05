@@ -27,7 +27,6 @@ A tool to create recipes for building conda packages from distributions on PyPI.
 #
 
 # stdlib
-import sys
 from typing import TYPE_CHECKING
 
 # 3rd party
@@ -100,7 +99,7 @@ def main(
 
 
 if __name__ == "__main__":
-	sys.exit(main())
+	main()
 
 # TODO: command to enable channels in .condarc for the environment
 # Environment prefixed is $CONDA_PREFIX

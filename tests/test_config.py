@@ -137,7 +137,7 @@ def test_pep621_class_valid_config(
 						id="maintainer_comma",
 						),
 				pytest.param(
-						f'[project]\nname = "spam"\nversion = "2020.0.0"\ndependencies = [1, 2, 3, 4, 5]',
+						'[project]\nname = "spam"\nversion = "2020.0.0"\ndependencies = [1, 2, 3, 4, 5]',
 						TypeError,
 						r"Invalid type for 'project.dependencies\[0\]': expected <class 'str'>, got <class 'int'>",
 						id="dependencies_wrong_type",

@@ -200,7 +200,7 @@ class MaryBerry:
 	def _try_again(self, func: Callable[[str, Union[str, int, Version]], str]) -> str:
 		name, version = self.config["name"], self.config["version"]
 
-		for retry in range(0, RETRIES):  # pylint: disable=W8202
+		for _ in range(0, RETRIES):  # pylint: disable=W8202
 			try:  # pylint: disable=R8203
 				url = func(name, version)
 				return url
@@ -219,9 +219,7 @@ class MaryBerry:
 
 		if self.config["extras"] == "all":
 			extras.extend(chain.from_iterable(self.config["optional-dependencies"].values()))
-		elif self.config["extras"] == "none":
-			pass
-		else:
+		elif self.config["extras"] != "none":
 			for extra in self.config["extras"]:
 				extras.extend(list(self.config["optional-dependencies"].get(extra, ())))
 
