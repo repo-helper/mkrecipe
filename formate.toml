@@ -27,30 +27,6 @@ lines_between_types = 0
 use_parentheses = true
 remove_redundant_aliases = true
 default_section = "THIRDPARTY"
-known_third_party = [
-    "backports_entry_points_selectable",
-    "click",
-    "coincidence",
-    "consolekit",
-    "coverage",
-    "coverage_pyver_pragma",
-    "dom_toml",
-    "domdf_python_tools",
-    "first",
-    "importlib_metadata",
-    "jinja2",
-    "packaging",
-    "pyproject_parser",
-    "pytest",
-    "pytest_cov",
-    "pytest_randomly",
-    "pytest_timeout",
-    "shippinglabel",
-    "shippinglabel_conda",
-    "shippinglabel_pypi",
-    "typing_extensions",
-    "whey",
-]
 known_first_party = [ "mkrecipe",]
 
 [config]
