@@ -100,7 +100,7 @@ class MaryBerry:
 						runtime_requirements,
 						*self.config["requires"],
 						normalize_func=str,
-						))
+						)),
 				)
 
 		project_license = license_lookup.get(self.config["license-key"], self.config["license-key"])
@@ -147,7 +147,7 @@ class MaryBerry:
 						"setuptools",
 						"wheel",
 						normalize_func=str,
-						))
+						)),
 				)
 
 		project_license = license_lookup.get(self.config["license-key"], self.config["license-key"])
@@ -228,7 +228,7 @@ class MaryBerry:
 		# TODO: handle extras from the dependencies. Lookup the requirements in the wheel metadata.
 		#  Perhaps wait until exposed in PyPI API
 		all_requirements: List[ComparableRequirement] = list(
-				filter_reqs_with_markers(self.config, chain(self.config["dependencies"], extra_requirements))
+				filter_reqs_with_markers(self.config, chain(self.config["dependencies"], extra_requirements)),
 				)
 		all_requirements = filter_reqs_by_py_version(self.config, all_requirements)
 

@@ -98,7 +98,7 @@ class PEP621Parser(whey.config.PEP621Parser):
 		self,
 		config: Dict[str, TOML_TYPES],
 		set_defaults: bool = False,
-		) -> ProjectDict:
+	) -> ProjectDict:
 		"""
 		Parse the TOML configuration.
 
@@ -320,8 +320,8 @@ def load_toml(filename: PathLike) -> Dict[str, Any]:  # TODO: TypedDict
 							parsed_config["requires"],
 							ComparableRequirement("setuptools"),
 							ComparableRequirement("wheel"),
-							)
-					)
+							),
+					),
 			)
 
 	return parsed_config

@@ -51,7 +51,7 @@ from tests.example_configs import (
 				pytest.param(COMPLETE_PROJECT_A, id="COMPLETE_PROJECT_A"),
 				pytest.param(COMPLETE_A, id="COMPLETE_A"),
 				pytest.param(COMPLETE_B, id="COMPLETE_B"),
-				]
+				],
 		)
 def test_pep621_class_valid_config(
 		toml_config: str,
@@ -142,7 +142,7 @@ def test_pep621_class_valid_config(
 						r"Invalid type for 'project.dependencies\[0\]': expected <class 'str'>, got <class 'int'>",
 						id="dependencies_wrong_type",
 						),
-				]
+				],
 		)
 def test_pep621parser_class_errors(
 		config: str,
@@ -163,7 +163,7 @@ def test_pep621parser_class_errors(
 				pytest.param('[build-system]\nrequires = ["whey"]', id="requires_whey"),
 				pytest.param('[build-system]\nrequires = ["setuptools", "wheel"]', id="requires_setuptools"),
 				pytest.param('[build-system]\nrequires = ["whey"]\nbuild-backend = "whey"', id="complete"),
-				]
+				],
 		)
 def test_buildsystem_parser_valid_config(
 		toml_config: str,
@@ -194,7 +194,7 @@ def test_buildsystem_parser_valid_config(
 						'[tool.mkrecipe]\nconda-channels = ["domdfcoding", "conda-forge"]',
 						id="conda_channels",
 						),
-				]
+				],
 		)
 def test_mkrecipe_parser_valid_config(
 		toml_config: str,
@@ -206,9 +206,10 @@ def test_mkrecipe_parser_valid_config(
 	advanced_data_regression.check(config)
 
 
-@pytest.mark.parametrize("toml_config", [
-		pytest.param('[tool.mkrecipe]\nextras = "cli"', id="extras_cli"),
-		])
+@pytest.mark.parametrize(
+		"toml_config",
+		[pytest.param('[tool.mkrecipe]\nextras = "cli"', id="extras_cli")],
+		)
 def test_mkrecipe_parser_invalid_extras(toml_config: str) -> None:
 
 	with pytest.raises(BadConfigError, match=r"Invalid value for \[tool.mkrecipe.extras\]: "):
@@ -221,7 +222,7 @@ def test_mkrecipe_parser_invalid_extras(toml_config: str) -> None:
 				pytest.param('', id="empty"),
 				pytest.param('[build-system]\nrequires = ["setuptools", "wheel"]', id="build-system"),
 				pytest.param('[tool.whey]\nlicense-key = "MIT"', id="tool.whey"),
-				]
+				],
 		)
 def test_load_toml_no_project_table(toml_config: str, tmp_pathplus: PathPlus) -> None:
 	(tmp_pathplus / "pyproject.toml").write_clean(toml_config)

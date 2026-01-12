@@ -17,7 +17,7 @@ configs_dir = PathPlus(__file__).parent / "configs"
 				"flake8-encodings.pyproject.toml",
 				"importcheck.pyproject.toml",
 				"mathematical.pyproject.toml",
-				]
+				],
 		)
 def test_make_recipe(
 		tmp_pathplus: PathPlus,
@@ -48,7 +48,7 @@ def test_make_recipe(
 				"importcheck.pyproject.toml",
 				"mathematical.pyproject.toml",
 				"github3-utils.pyproject.toml",
-				]
+				],
 		)
 def test_MaryBerry_make(
 		tmp_pathplus: PathPlus,
@@ -79,7 +79,7 @@ def test_MaryBerry_make(
 				"flake8-encodings.pyproject.toml",
 				"importcheck.pyproject.toml",
 				"mathematical.pyproject.toml",
-				]
+				],
 		)
 def test_MaryBerry_make_for_wheel(
 		tmp_pathplus: PathPlus,

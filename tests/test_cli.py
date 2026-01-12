@@ -23,7 +23,7 @@ configs_dir = PathPlus(__file__).parent / "configs"
 				"flake8-encodings.pyproject.toml",
 				"importcheck.pyproject.toml",
 				"mathematical.pyproject.toml",
-				]
+				],
 		)
 def test_mkrecipe(
 		tmp_pathplus: PathPlus,
@@ -80,7 +80,7 @@ def test_mkrecipe(
 				"flake8-encodings.pyproject.toml",
 				"importcheck.pyproject.toml",
 				"mathematical.pyproject.toml",
-				]
+				],
 		)
 def test_mkrecipe_wheel(
 		tmp_pathplus: PathPlus,
@@ -137,7 +137,7 @@ def _param(label: str, expr: bool):  # noqa: MAN002
 				"flake8-encodings.pyproject.toml",
 				"importcheck.pyproject.toml",
 				"mathematical.pyproject.toml",
-				]
+				],
 		)
 @pytest.mark.parametrize(
 		"click_ver",
@@ -150,7 +150,7 @@ def _param(label: str, expr: bool):  # noqa: MAN002
 						'8',
 						marks=pytest.mark.skipif(_click_version[0] != 8, reason="Output differs on click 8"),
 						),
-				]
+				],
 		)
 def test_mkrecipe_bad_type(
 		tmp_pathplus: PathPlus,
@@ -184,7 +184,7 @@ class TestHandleTracebacks:
 					pytest.param('', id="empty"),
 					pytest.param('[build-system]\nrequires = ["setuptools", "wheel"]', id="build-system"),
 					pytest.param('[tool.whey]\nlicense-key = "MIT"', id="tool.whey"),
-					]
+					],
 			)
 	def test_no_project_table(self, toml_config: str, tmp_pathplus: PathPlus) -> None:
 		runner = CliRunner()
@@ -206,7 +206,7 @@ class TestHandleTracebacks:
 			KeyError: \"'project' table not found in 'pyproject.toml'\"
 			    Use '--traceback' to view the full traceback.
 			Aborted!
-			"""
+			""",
 					)
 
 	def test_no_requirements(self, tmp_pathplus: PathPlus) -> None:
@@ -234,5 +234,5 @@ class TestHandleTracebacks:
 			BadConfigError: {error_message}
 			    Use '--traceback' to view the full traceback.
 			Aborted!
-			"""
+			""",
 					)
