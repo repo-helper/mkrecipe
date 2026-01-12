@@ -113,7 +113,7 @@ mkrecipe
 	:alt: Maintenance
 
 .. |pypi-downloads| image:: https://img.shields.io/pypi/dm/mkrecipe
-	:target: https://pypi.org/project/mkrecipe/
+	:target: https://pypistats.org/packages/mkrecipe
 	:alt: PyPI - Downloads
 
 .. end shields
